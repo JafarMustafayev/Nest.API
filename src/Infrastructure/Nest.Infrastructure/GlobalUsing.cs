@@ -1,0 +1,9 @@
+﻿global using MailKit.Net.Smtp;
+global using MailKit.Security;
+global using Microsoft.Extensions.Options;
+global using MimeKit;
+global using Nest.Application.Abstractions.Services;
+global using Nest.Application.DTOs;
+global using Nest.Infrastructure.Settings;
+global using Microsoft.Extensions.DependencyInjection;
+global using Nest.Infrastructure.Services.MailSender;

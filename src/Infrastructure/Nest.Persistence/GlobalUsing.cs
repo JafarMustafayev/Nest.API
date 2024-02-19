@@ -1,0 +1,14 @@
+﻿global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Nest.Application.Abstractions.Repositories.BaseRepositories;
+global using Nest.Application.Exceptions;
+global using Nest.Domain.Entities.Common;
+global using Nest.Domain.Entities.Identity;
+global using Nest.Persistence.Context;
+global using Nest.Persistence.Implementations.Repositories.BaseRepositories;
+global using Nest.Persistence.ModelConfigurations;
+global using System.Linq.Expressions;

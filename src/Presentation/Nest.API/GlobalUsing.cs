@@ -5,3 +5,4 @@ global using Nest.Infrastructure;
 global using Nest.Persistence;
 global using System.Net;
 global using Nest.Application.DTOs;
+global using Nest.API.Middlewares;

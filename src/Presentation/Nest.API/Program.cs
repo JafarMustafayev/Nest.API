@@ -1,3 +1,5 @@
+using Nest.Infrastructure.Services.Storage.Local;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,8 +9,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddStorage<LocalStorage>();
+
 builder.Services.AddPersistenceServices();
-builder.Services.AddInfrastructureService();
+builder.Services.AddInfrastructureServices();
 
 var app = builder.Build();
 

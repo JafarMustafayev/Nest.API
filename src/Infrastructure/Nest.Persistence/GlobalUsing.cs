@@ -6,6 +6,7 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Nest.Application.Abstractions.Repositories.BaseRepositories;
 global using Nest.Application.Exceptions;
+global using Nest.Domain.Entities;
 global using Nest.Domain.Entities.Common;
 global using Nest.Domain.Entities.Identity;
 global using Nest.Persistence.Context;

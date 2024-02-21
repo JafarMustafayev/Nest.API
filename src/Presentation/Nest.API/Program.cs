@@ -1,5 +1,3 @@
-using Nest.Infrastructure.Services.Storage.Local;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +11,7 @@ builder.Services.AddStorage<LocalStorage>();
 
 builder.Services.AddPersistenceServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddApplicationServices();
 
 builder.Services.AddCors(options =>
 {
@@ -38,7 +37,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseCustomExceptionHandler();
+//app.UseCustomExceptionHandler();
 app.UseCors("CorsPolicy");
 
 app.Run();

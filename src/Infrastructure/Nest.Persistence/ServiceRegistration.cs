@@ -1,4 +1,5 @@
-﻿
+﻿using Nest.Persistence.Implementations.Repositories.ContactRepositories;
+using Org.BouncyCastle.Asn1.X509.Qualified;
 
 namespace Nest.Persistence;
 
@@ -6,7 +7,7 @@ public static class ServiceRegistration
 {
     public static void AddPersistenceServices(this IServiceCollection services)
     {
-        //services.AddAutoMapper(typeof(ColorProfile));
+        services.AddAutoMapper(typeof(ContactMaper).Assembly);
         services.AddReadRepositories();
         services.AddServices();
         services.AddWriteRepositories();
@@ -33,18 +34,17 @@ public static class ServiceRegistration
 
     public static void AddReadRepositories(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+        services.AddScoped<IContactReadRepository, ContactReadRepository>();
     }
 
     public static void AddWriteRepositories(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
+        services.AddScoped<IContactWriteReposiyory, ContactWriteRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)
     {
-        
+        services.AddScoped<IMailService, MailService>();
+        services.AddScoped<IContactService, ContactService>();
     }
-
-
 }

@@ -2,7 +2,14 @@
 global using Microsoft.AspNetCore.WebUtilities;
 global using Microsoft.EntityFrameworkCore;
 global using Nest.Application.Abstractions;
+global using Nest.Application.Abstractions.Repositories.BaseRepositories;
 global using Nest.Application.DTOs;
+global using Nest.Application.DTOs.Contact;
+global using Nest.Domain.Entities;
 global using Nest.Domain.Entities.Common;
 global using System.Linq.Expressions;
 global using System.Text;
+global using FluentValidation;
+global using FluentValidation.AspNetCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using Nest.Application.Validators;

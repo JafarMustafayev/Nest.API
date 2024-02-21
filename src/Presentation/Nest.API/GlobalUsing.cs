@@ -6,3 +6,5 @@ global using Nest.Persistence;
 global using System.Net;
 global using Nest.Application.DTOs;
 global using Nest.API.Middlewares;
+global using Nest.Application;
+global using Nest.Infrastructure.Services.Storage.Local;

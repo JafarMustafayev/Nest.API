@@ -17,10 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\core\Nest.Application\Nest.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Nest.Infrastructure\Nest.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Nest.Persistence\Nest.Persistence.csproj" />
   </ItemGroup>

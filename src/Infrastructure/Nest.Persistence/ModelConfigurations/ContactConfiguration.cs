@@ -13,7 +13,8 @@ public class ContactConfiguration : IEntityTypeConfiguration<Contact>
             .IsRequired();
 
         builder.Property(x => x.Phone)
-            .HasMaxLength(20);
+            .HasMaxLength(20)
+            .IsRequired(false);
 
         builder.Property(x => x.Subject)
             .HasMaxLength(100)

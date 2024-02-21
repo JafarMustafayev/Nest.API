@@ -40,4 +40,40 @@ public class MailService : IMailService
         await smtp.SendAsync(email);
         smtp.Disconnect(true);
     }
+
+    public async Task SendEmailForContactAsync(string to, string subject, string message)
+    {
+        MailRequest request = new()
+        {
+            ToEmail = to,
+            Subject = subject,
+            Body = message
+        };
+
+        await SendEmailAsync(request);
+    }
+
+    public async Task SendEmailForContactAtMomentAsync(string to, string subject)
+    {
+        MailRequest request = new()
+        {
+            ToEmail = to,
+            Subject = subject,
+            Body = "<h1>Thank you for contacting us</h1>"
+        };
+
+        await SendEmailAsync(request);
+    }
+
+    public async Task SendWelcomeEmailAsync(string to)
+    {
+        MailRequest request = new()
+        {
+            ToEmail = to,
+            Subject = "Welcome to Nest",
+            Body = "<h1>Welcome to Nest</h1>"
+        };
+
+        await SendEmailAsync(request);
+    }
 }

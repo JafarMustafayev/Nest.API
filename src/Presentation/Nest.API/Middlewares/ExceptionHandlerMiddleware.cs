@@ -12,14 +12,11 @@ public static class ExceptionHandlerMiddleware
                 int statusCode = (int)HttpStatusCode.InternalServerError;
                 string message = "Internal Server Error";
 
-                if (contextFeature != null)
+                if (contextFeature != null && contextFeature.Error is IBaseException)
                 {
-                    if (contextFeature.Error is IBaseException)
-                    {
-                        var exception = (IBaseException)contextFeature.Error;
-                        statusCode = exception.StatusCode;
-                        message = exception.CustomMessage;
-                    }
+                    var exception = (IBaseException)contextFeature.Error;
+                    statusCode = exception.StatusCode;
+                    message = exception.CustomMessage;
                 }
                 context.Response.StatusCode = statusCode;
                 await context.Response.WriteAsJsonAsync(new ResponseDTO { StatusCode = statusCode, Message = message });

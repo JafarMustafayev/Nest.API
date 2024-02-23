@@ -6,4 +6,5 @@ public class GetSingleContactForTableDTO
     public string FullName { get; set; }
     public string Subject { get; set; }
     public DateTime CreatedAt { get; set; }
+    public bool IsRead { get; set; }
 }

@@ -24,4 +24,11 @@ public class ContactManageController : ControllerBase
         var res = await _contactService.GetSingleAsync(id);
         return StatusCode(res.StatusCode, res);
     }
+
+    [HttpDelete("Delete/{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        var res = await _contactService.DeleteAsync(id);
+        return StatusCode(res.StatusCode, res);
+    }
 }

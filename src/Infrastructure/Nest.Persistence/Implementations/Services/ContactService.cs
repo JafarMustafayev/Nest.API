@@ -33,9 +33,34 @@ public class ContactService : IContactService
         };
     }
 
+    public async Task<ResponseDTO> DeleteAsync(string id)
+    {
+        var contact = await _contactReadRepository.GetByIdAsync(id);
+
+        if (contact is null)
+        {
+            return new()
+            {
+                Message = "Contact not found",
+                Success = false,
+                StatusCode = StatusCodes.Status404NotFound
+            };
+        }
+
+        contact.IsDeleted = true;
+        _contactWriteReposiyory.Update(contact);
+        await _contactWriteReposiyory.SaveChangesAsync();
+        return new()
+        {
+            Message = "Contact deleted successfully",
+            Success = true,
+            StatusCode = StatusCodes.Status200OK
+        };
+    }
+
     public async Task<ResponseDTO> GetAll()
     {
-        var contacts = _contactReadRepository.GetAll(false).OrderBy(x => x.FullName);
+        var contacts = _contactReadRepository.GetAllByExpression(x => !x.IsDeleted, false).OrderBy(x => x.FullName);
 
         var map = _mapper.Map<ICollection<GetSingleContactForTableDTO>>(contacts);
 
@@ -63,6 +88,7 @@ public class ContactService : IContactService
             };
         }
         var map = _mapper.Map<GetSingleContactDTO>(contact);
+        await ReadMessage(contact);
 
         return new()
         {
@@ -71,5 +97,12 @@ public class ContactService : IContactService
             Success = true,
             StatusCode = StatusCodes.Status200OK
         };
+    }
+
+    public async Task ReadMessage(Contact contact)
+    {
+        contact.IsRead = true;
+        _contactWriteReposiyory.Update(contact);
+        await _contactWriteReposiyory.SaveChangesAsync();
     }
 }

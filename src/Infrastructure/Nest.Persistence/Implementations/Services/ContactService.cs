@@ -33,13 +33,43 @@ public class ContactService : IContactService
         };
     }
 
-    public Task<ICollection<GetSingleContactDTO>> GetAll()
+    public async Task<ResponseDTO> GetAll()
     {
-        throw new NotImplementedException();
+        var contacts = _contactReadRepository.GetAll(false).OrderBy(x => x.FullName);
+
+        var map = _mapper.Map<ICollection<GetSingleContactForTableDTO>>(contacts);
+
+        return new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Payload = map,
+            Message = "Contacts found",
+            Success = true,
+            Errors = null
+        };
     }
 
-    public Task<GetSingleContactDTO> GetSingleAsync(string id)
+    public async Task<ResponseDTO> GetSingleAsync(string id)
     {
-        throw new NotImplementedException();
+        var contact = await _contactReadRepository.GetByIdAsync(id, false);
+
+        if (contact is null)
+        {
+            return new()
+            {
+                Message = "Contact not found",
+                Success = false,
+                StatusCode = StatusCodes.Status404NotFound
+            };
+        }
+        var map = _mapper.Map<GetSingleContactDTO>(contact);
+
+        return new()
+        {
+            Payload = map,
+            Message = "Contact found",
+            Success = true,
+            StatusCode = StatusCodes.Status200OK
+        };
     }
 }

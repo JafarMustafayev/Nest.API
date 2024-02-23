@@ -22,12 +22,12 @@ public class ContactCreateDTOValidator : AbstractValidator<ContactCreateDTO>
             .NotEmpty()
             .WithMessage("subject is required")
             .MaximumLength(100)
-            .WithMessage("max 100 dene ola biler ");
+            .WithMessage("subject max 100 dene ola biler ");
 
         RuleFor(x => x.Message)
             .NotEmpty()
             .WithMessage("Message is required")
             .MaximumLength(2500)
-            .WithMessage("max 100 dene ola biler ");
+            .WithMessage("mesaj  max 2500 dene ola biler ");
     }
 }

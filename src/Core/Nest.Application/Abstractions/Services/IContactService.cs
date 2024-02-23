@@ -2,9 +2,9 @@
 
 public interface IContactService
 {
-    Task<GetSingleContactDTO> GetSingleAsync(string id);
+    Task<ResponseDTO> GetSingleAsync(string id);
 
-    Task<ICollection<GetSingleContactDTO>> GetAll();
+    Task<ResponseDTO> GetAll();
 
     Task<ResponseDTO> CreateAsync(ContactCreateDTO contactCreateDTO);
 }

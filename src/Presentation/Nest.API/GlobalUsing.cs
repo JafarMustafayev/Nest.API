@@ -1,10 +1,12 @@
 ﻿global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Diagnostics;
+global using Microsoft.AspNetCore.Mvc;
+global using Nest.Application;
 global using Nest.Application.Abstractions;
+global using Nest.Application.Abstractions.Services;
+global using Nest.Application.DTOs;
+global using Nest.Application.DTOs.Contact;
 global using Nest.Infrastructure;
+global using Nest.Infrastructure.Services.Storage.Local;
 global using Nest.Persistence;
 global using System.Net;
-global using Nest.Application.DTOs;
-global using Nest.API.Middlewares;
-global using Nest.Application;
-global using Nest.Infrastructure.Services.Storage.Local;

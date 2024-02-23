@@ -58,9 +58,10 @@ public class ContactService : IContactService
         };
     }
 
-    public async Task<ResponseDTO> GetAll()
+    public async Task<ResponseDTO> GetAll(int page, int take)
     {
-        var contacts = _contactReadRepository.GetAllByExpression(x => !x.IsDeleted, false).OrderBy(x => x.FullName);
+        Expression<Func<Contact, object>> orderBy = x => x.FullName;
+        var contacts = _contactReadRepository.GetAllByExpression(x => !x.IsDeleted, page, take, false, orderBy);
 
         var map = _mapper.Map<ICollection<GetSingleContactForTableDTO>>(contacts);
 

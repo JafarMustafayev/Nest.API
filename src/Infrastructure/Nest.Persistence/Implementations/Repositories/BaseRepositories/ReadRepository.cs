@@ -1,5 +1,5 @@
-﻿
-namespace Nest.Persistence.Implementations.Repositories.BaseRepositories;
+﻿namespace Nest.Persistence.Implementations.Repositories.BaseRepositories;
+
 public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
 {
     private readonly AppDbContext _context;
@@ -11,7 +11,7 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
 
     public DbSet<T> Table => _context.Set<T>();
 
-    public IQueryable<T> GetAll(bool isTracking = true, bool forAdmin = true, List<Expression<Func<T, object>>> includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)> thenIncludes = null)
+    public IQueryable<T> GetAll(int page, int take, bool isTracking = true, Expression<Func<T, object>>? OrderBy = null, List<Expression<Func<T, object>>>? includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)>? thenIncludes = null)
     {
         var query = isTracking ? Table : Table.AsNoTracking();
 
@@ -31,17 +31,17 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
             }
         }
 
-        if (forAdmin)
+        if (OrderBy != null)
         {
-            return query;
+            query = query.OrderBy(OrderBy);
         }
-        else
-        {
-            return query.Where(x => x.IsDeleted == false);
-        }
+
+        query = query.Skip((page - 1) * take).Take(take);
+
+        return query;
     }
 
-    public IQueryable<T> GetAllByExpression(Expression<Func<T, bool>> expression, bool isTracking = true, bool forAdmin = true, List<Expression<Func<T, object>>> includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)> thenIncludes = null)
+    public IQueryable<T> GetAllByExpression(Expression<Func<T, bool>> expression, int page, int take, bool isTracking = true, Expression<Func<T, object>>? OrderBy = null, List<Expression<Func<T, object>>> includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)>? thenIncludes = null)
     {
         var query = Table.Where(expression).AsQueryable();
 
@@ -63,14 +63,14 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
 
         query = isTracking ? query : query.AsNoTracking();
 
-        if (forAdmin)
+        if (OrderBy != null)
         {
-            return query;
+            query = query.OrderBy(OrderBy);
         }
-        else
-        {
-            return query.Where(x => x.IsDeleted == false);
-        }
+
+        query = query.Skip((page - 1) * take).Take(take);
+
+        return query;
     }
 
     public async Task<T?> GetSingleByExpressionAsync(Expression<Func<T, bool>> expression, bool isTracking = true, List<Expression<Func<T, object>>> includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)> thenIncludes = null)

@@ -11,10 +11,10 @@ public class ContactManageController : ControllerBase
         _contactService = contactService;
     }
 
-    [HttpGet("GetAll")]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("GetAll/{page}")]
+    public async Task<IActionResult> GetAll(int page = 1)
     {
-        var res = await _contactService.GetAll();
+        var res = await _contactService.GetAll(page, 10);
         return StatusCode(res.StatusCode, res);
     }
 

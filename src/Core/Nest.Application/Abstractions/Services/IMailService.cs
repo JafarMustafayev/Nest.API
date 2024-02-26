@@ -11,4 +11,6 @@ public interface IMailService
     Task SendEmailForContactAtMomentAsync(string to, string subject);
 
     Task SendEmailForContactAsync(string to, string subject, string message);
+
+    Task<List<MailResponseDTO>> GetMailsAsync();
 }

@@ -1,6 +1,12 @@
-﻿namespace Nest.Infrastructure.Services.MailSender;
+﻿using MailKit;
+using MailKit.Net.Imap;
+using MailKit.Search;
+using Microsoft.Extensions.Azure;
+using System.Security.Cryptography;
 
-public class MailService : IMailService
+namespace Nest.Infrastructure.Services.MailSender;
+
+public class MailService : Application.Abstractions.Services.IMailService
 {
     private readonly MailSettings _mailSettings;
 
@@ -75,5 +81,39 @@ public class MailService : IMailService
         };
 
         await SendEmailAsync(request);
+    }
+
+    public async Task<List<MailResponseDTO>> GetMailsAsync()
+    {
+        using (var client = new ImapClient())
+        {
+            await client.ConnectAsync("imap.gmail.com", 993, SecureSocketOptions.SslOnConnect);
+
+            await client.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
+
+            client.Inbox.Open(FolderAccess.ReadOnly);
+            var uids = client.Inbox.Search(SearchQuery.All);
+
+            var messages = new List<MailResponseDTO>();
+            foreach (var uid in uids)
+            {
+                var message = client.Inbox.GetMessage(uid);
+
+                messages.Add(
+                    new MailResponseDTO
+                    {
+                        Body = message.TextBody,
+                        Subject = message.Subject,
+                        To = message.To.ToString(),
+                        From = message.From.ToString(),
+                        CC = message.Cc.ToString(),
+                        BCC = message.Bcc.ToString(),
+                        Date = message.Date.DateTime,
+                    });
+            }
+
+            await client.DisconnectAsync(true);
+            return messages;
+        }
     }
 }

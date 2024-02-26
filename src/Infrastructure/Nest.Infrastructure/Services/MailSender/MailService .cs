@@ -13,7 +13,7 @@ public class MailService : IMailService
     {
         var email = new MimeMessage();
         email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
-        email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+        email.To.Add(MailboxAddress.Parse(mailRequest.To));
         email.Subject = mailRequest.Subject;
         var builder = new BodyBuilder();
         if (mailRequest.Attachments != null)
@@ -45,7 +45,7 @@ public class MailService : IMailService
     {
         MailRequest request = new()
         {
-            ToEmail = to,
+            To = to,
             Subject = subject,
             Body = message
         };
@@ -57,7 +57,7 @@ public class MailService : IMailService
     {
         MailRequest request = new()
         {
-            ToEmail = to,
+            To = to,
             Subject = subject,
             Body = "<h1>Thank you for contacting us</h1>"
         };
@@ -69,7 +69,7 @@ public class MailService : IMailService
     {
         MailRequest request = new()
         {
-            ToEmail = to,
+            To = to,
             Subject = "Welcome to Nest",
             Body = "<h1>Welcome to Nest</h1>"
         };

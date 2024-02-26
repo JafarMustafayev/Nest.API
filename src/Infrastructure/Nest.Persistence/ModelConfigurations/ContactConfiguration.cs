@@ -21,7 +21,7 @@ public class ContactConfiguration : IEntityTypeConfiguration<Contact>
             .IsRequired();
 
         builder.Property(x => x.Message)
-            .HasMaxLength(2500)
+            .HasMaxLength(10000)
             .IsRequired();
     }
 }

@@ -4,7 +4,7 @@ public static class ServiceRegistration
 {
     public static void AddInfrastructureServices(this IServiceCollection services)
     {
-        services.AddTransient<IMailService, MailService>();
+        services.AddTransient<ICustomMailService, CustomMailService>();
         services.Configure<MailSettings>(Configuration.MailSettings);
         services.AddScoped<IStorageService, StorageService>();
     }

@@ -1,16 +1,10 @@
-﻿using MailKit;
-using MailKit.Net.Imap;
-using MailKit.Search;
-using Microsoft.Extensions.Azure;
-using System.Security.Cryptography;
+﻿namespace Nest.Infrastructure.Services.MailSender;
 
-namespace Nest.Infrastructure.Services.MailSender;
-
-public class MailService : Application.Abstractions.Services.IMailService
+public class CustomMailService : ICustomMailService
 {
     private readonly MailSettings _mailSettings;
 
-    public MailService(IOptions<MailSettings> mailSettings)
+    public CustomMailService(IOptions<MailSettings> mailSettings)
     {
         _mailSettings = mailSettings.Value;
     }
@@ -83,7 +77,7 @@ public class MailService : Application.Abstractions.Services.IMailService
         await SendEmailAsync(request);
     }
 
-    public async Task<List<MailResponseDTO>> GetMailsAsync()
+    public async Task<List<MailResponseForTableDTO>> GetAllMailsAsync()
     {
         using (var client = new ImapClient())
         {
@@ -94,26 +88,56 @@ public class MailService : Application.Abstractions.Services.IMailService
             client.Inbox.Open(FolderAccess.ReadOnly);
             var uids = client.Inbox.Search(SearchQuery.All);
 
-            var messages = new List<MailResponseDTO>();
+            var messages = new List<MailResponseForTableDTO>();
             foreach (var uid in uids)
             {
                 var message = client.Inbox.GetMessage(uid);
 
                 messages.Add(
-                    new MailResponseDTO
+                    new MailResponseForTableDTO
                     {
+                        MessageId = message.MessageId.Encode(),
                         Body = message.TextBody,
                         Subject = message.Subject,
                         To = message.To.ToString(),
                         From = message.From.ToString(),
-                        CC = message.Cc.ToString(),
-                        BCC = message.Bcc.ToString(),
                         Date = message.Date.DateTime,
                     });
             }
 
             await client.DisconnectAsync(true);
             return messages;
+        }
+    }
+
+    public async Task<SingleMailDTO> GetMailByIdAsync(string id)
+    {
+        using (var client = new ImapClient())
+        {
+            await client.ConnectAsync("imap.gmail.com", 993, SecureSocketOptions.SslOnConnect);
+
+            await client.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
+
+            await client.Inbox.OpenAsync(FolderAccess.ReadOnly);
+            id = id.Decode();
+
+            var uid = await client.Inbox.SearchAsync(SearchQuery.HeaderContains("Message-ID", id));
+            var message = await client.Inbox.GetMessageAsync(uid[0]);
+            var mail = new SingleMailDTO
+            {
+                To = message.To.ToString(),
+                From = message.From.ToString(),
+                Subject = message.Subject,
+                Body = message.TextBody,
+                Date = message.Date.DateTime,
+                MessageId = message.MessageId.Encode(),
+                Bcc = message.Bcc.ToString(),
+                Cc = message.Cc.ToString(),
+                ReplyTo = message.ReplyTo.ToString(),
+                Importance = message.Importance.ToString(),
+            };
+            await client.DisconnectAsync(true);
+            return mail;
         }
     }
 }

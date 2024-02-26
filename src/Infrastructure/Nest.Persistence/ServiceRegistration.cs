@@ -44,7 +44,7 @@ public static class ServiceRegistration
 
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped<IMailService, MailService>();
+        services.AddScoped<ICustomMailService, CustomMailService>();
         services.AddScoped<IContactService, ContactService>();
     }
 }

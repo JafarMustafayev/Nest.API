@@ -5,12 +5,12 @@ public class ContactService : IContactService
     private readonly IContactWriteReposiyory _contactWriteReposiyory;
     private readonly IContactReadRepository _contactReadRepository;
     private readonly IMapper _mapper;
-    private readonly IMailService _mailService;
+    private readonly ICustomMailService _mailService;
 
     public ContactService(IContactWriteReposiyory contactWriteReposiyory,
                           IContactReadRepository contactReadRepository,
                           IMapper mapper,
-                          IMailService mailService)
+                          ICustomMailService mailService)
     {
         _contactWriteReposiyory = contactWriteReposiyory;
         _contactReadRepository = contactReadRepository;

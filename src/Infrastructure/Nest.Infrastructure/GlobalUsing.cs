@@ -1,6 +1,9 @@
 ﻿global using Azure.Storage.Blobs;
 global using Azure.Storage.Blobs.Models;
+global using MailKit;
+global using MailKit.Net.Imap;
 global using MailKit.Net.Smtp;
+global using MailKit.Search;
 global using MailKit.Security;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Http;
@@ -12,6 +15,7 @@ global using Nest.Application.Abstractions.Storage;
 global using Nest.Application.Abstractions.Storage.Azure;
 global using Nest.Application.Abstractions.Storage.Local;
 global using Nest.Application.DTOs;
+global using Nest.Application.Helper;
 global using Nest.Infrastructure.Services.MailSender;
 global using Nest.Infrastructure.Services.Storage;
 global using Nest.Infrastructure.Settings;

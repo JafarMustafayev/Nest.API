@@ -1,6 +1,6 @@
 ﻿namespace Nest.Application.Abstractions.Services;
 
-public interface IMailService
+public interface ICustomMailService
 {
     Task SendEmailAsync(MailRequest mailRequest);
 
@@ -12,5 +12,7 @@ public interface IMailService
 
     Task SendEmailForContactAsync(string to, string subject, string message);
 
-    Task<List<MailResponseDTO>> GetMailsAsync();
+    Task<List<MailResponseForTableDTO>> GetAllMailsAsync();
+
+    Task<SingleMailDTO> GetMailByIdAsync(string id);
 }

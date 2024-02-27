@@ -19,3 +19,4 @@ global using Nest.Application.Helper;
 global using Nest.Infrastructure.Services.MailSender;
 global using Nest.Infrastructure.Services.Storage;
 global using Nest.Infrastructure.Settings;
+global using Nest.Application.Exceptions;

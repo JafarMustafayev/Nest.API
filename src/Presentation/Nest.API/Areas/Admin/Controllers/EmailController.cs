@@ -24,30 +24,34 @@ public class EmailController : ControllerBase
         });
     }
 
-    [HttpGet("SendEmailForContact")]
-    public async Task<IActionResult> SendEmailForContact()
+    [HttpGet("GetAllMails/{page}")]
+    public async Task<IActionResult> GetAllMails(int page = 1)
     {
-        var res = new ResponseDTO()
-        {
-            Message = "Email sent successfully",
-            Success = true,
-            StatusCode = 200,
-            Payload = await _mailService.GetAllMailsAsync()
-        };
+        var res = await _mailService.GetAllMailsAsync(page);
 
         return StatusCode(res.StatusCode, res);
     }
 
-    [HttpGet("GetMailById")]
+    [HttpGet("GetMailById/{id}")]
     public async Task<IActionResult> GetMailById(string id)
     {
-        var res = new ResponseDTO()
-        {
-            Message = "Email sent successfully",
-            Success = true,
-            StatusCode = 200,
-            Payload = await _mailService.GetMailByIdAsync(id)
-        };
+        var res = await _mailService.GetMailByIdAsync(id);
+
+        return StatusCode(res.StatusCode, res);
+    }
+
+    [HttpDelete("Delete/{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        var res = await _mailService.DeleteMessage(id);
+
+        return StatusCode(res.StatusCode, res);
+    }
+
+    [HttpGet("RecycleBins")]
+    public async Task<IActionResult> RecycleBins()
+    {
+        var res = await _mailService.RecycleBins();
 
         return StatusCode(res.StatusCode, res);
     }

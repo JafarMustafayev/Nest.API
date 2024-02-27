@@ -4,13 +4,27 @@ public static class Coder
 {
     public static string Encode(this string value)
     {
-        byte[] bytes = Encoding.UTF8.GetBytes(value);
-        return WebEncoders.Base64UrlEncode(bytes);
+        try
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(value);
+            return WebEncoders.Base64UrlEncode(bytes);
+        }
+        catch (Exception)
+        {
+            throw new InvalidOperationCustomException();
+        }
     }
 
     public static string Decode(this string value)
     {
-        byte[] bytes = WebEncoders.Base64UrlDecode(value);
-        return Encoding.UTF8.GetString(bytes);
+        try
+        {
+            byte[] bytes = WebEncoders.Base64UrlDecode(value);
+            return Encoding.UTF8.GetString(bytes);
+        }
+        catch (Exception)
+        {
+            throw new InvalidOperationCustomException();
+        }
     }
 }

@@ -12,7 +12,11 @@ public interface ICustomMailService
 
     Task SendEmailForContactAsync(string to, string subject, string message);
 
-    Task<List<MailResponseForTableDTO>> GetAllMailsAsync();
+    Task<ResponseDTO> GetAllMailsAsync(int page = 1, int take = 20);
 
-    Task<SingleMailDTO> GetMailByIdAsync(string id);
+    Task<ResponseDTO> GetMailByIdAsync(string id);
+
+    Task<ResponseDTO> DeleteMessage(string id);
+
+    Task<ResponseDTO> RecycleBins();
 }

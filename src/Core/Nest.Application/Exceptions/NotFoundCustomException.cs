@@ -6,7 +6,7 @@ public class NotFoundCustomException : Exception, IBaseException
 
     public string CustomMessage { get; }
 
-    public NotFoundCustomException(string message, int statusCode = 404)
+    public NotFoundCustomException(string message, int statusCode = 404) : base(message)
     {
         StatusCode = statusCode;
         CustomMessage = message;

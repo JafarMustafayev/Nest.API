@@ -1,28 +1,20 @@
-﻿
-namespace Nest.Application.Exceptions;
+﻿namespace Nest.Application.Exceptions;
 
-public class ConnectionCustomException :Exception, IBaseException
+public class ConnectionCustomException : Exception, IBaseException
 {
     public int StatusCode { get; }
 
     public string CustomMessage { get; }
 
-    public ConnectionCustomException(int statusCode, string message)
-    {
-        StatusCode = statusCode;
-        CustomMessage = message;
-    }
-
-    public ConnectionCustomException(string message)
+    public ConnectionCustomException(string message) : base(message)
     {
         StatusCode = 500;
         CustomMessage = message;
     }
 
-    public ConnectionCustomException()
+    public ConnectionCustomException() : base("Connection string not found")
     {
         StatusCode = 500;
         CustomMessage = "Connection string not found";
     }
 }
-

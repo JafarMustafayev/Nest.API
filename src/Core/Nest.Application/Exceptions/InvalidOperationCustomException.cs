@@ -1,6 +1,6 @@
 ﻿namespace Nest.Application.Exceptions;
 
-internal class InvalidOperationCustomException : Exception, IBaseException
+public class InvalidOperationCustomException : Exception, IBaseException
 {
     public int StatusCode { get; }
 
@@ -12,7 +12,13 @@ internal class InvalidOperationCustomException : Exception, IBaseException
         CustomMessage = "Invalid operation";
     }
 
-    public InvalidOperationCustomException(string message, int statusCode = 400)
+    public InvalidOperationCustomException(string message) : base(message)
+    {
+        CustomMessage = message;
+        StatusCode = StatusCodes.Status409Conflict;
+    }
+
+    public InvalidOperationCustomException(string message, int statusCode) : base(message)
     {
         StatusCode = statusCode;
         CustomMessage = message;

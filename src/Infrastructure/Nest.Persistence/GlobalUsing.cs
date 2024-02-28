@@ -22,3 +22,4 @@ global using AutoMapper;
 global using Microsoft.AspNetCore.Http;
 global using Nest.Infrastructure.Services.MailSender;
 global using Nest.Persistence.Implementations.Services;
+global using Nest.Application.DTOs.AuthDTOs;

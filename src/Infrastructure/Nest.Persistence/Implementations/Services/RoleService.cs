@@ -30,38 +30,12 @@ public class RoleService : IRoleService
         throw new InvalidOperationCustomException("Role creation failed");
     }
 
-    public async Task<ResponseDTO> DeleteAsync(string id)
-    {
-        var role = await _roleManager.FindByIdAsync(id);
-
-        if (role == null)
-        {
-            throw new NotFoundCustomException("Role not found");
-        }
-
-        var result = _roleManager.DeleteAsync(role);
-        if (result.IsCompleted)
-        {
-            return new()
-            {
-                Message = "Role deleted successfully",
-                StatusCode = 200
-            };
-        }
-        throw new InvalidOperationCustomException("Role deletion failed");
-    }
-
     public Task<ResponseDTO> GetAllRolesAsync()
     {
         throw new NotImplementedException();
     }
 
     public Task<ResponseDTO> GetSingleRoleAsync(string id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ResponseDTO> UpdateAsync(UpdateRoleDTO roleDTO)
     {
         throw new NotImplementedException();
     }

@@ -1,4 +1,6 @@
-﻿namespace Nest.Persistence.Implementations.Services;
+﻿using Nest.Application.Consts;
+
+namespace Nest.Persistence.Implementations.Services;
 
 public class AuthService : IAuthService
 {
@@ -20,8 +22,6 @@ public class AuthService : IAuthService
         _emailService = emailService;
         _mapper = mapper;
     }
-
-    //private readonly ITokenHandler _tokenHandler;;
 
     public Task<ResponseDTO> ConfirmEmailAsync(ConfirmEmailDTO confirmEmailDTO)
     {
@@ -71,10 +71,15 @@ public class AuthService : IAuthService
             throw new InvalidOperationCustomException(errors);
         }
 
-        try
+        if (await _roleManager.FindByNameAsync(UserRoleConsts.User) == null)
         {
-            var roleRes = await _userManager.AddToRoleAsync(user, "Member");
+            await _roleManager.CreateAsync(new AppRole() { Name = UserRoleConsts.User });
+        }
 
+        var roleRes = await _userManager.AddToRoleAsync(user, UserRoleConsts.User);
+
+        if (!roleRes.Succeeded)
+        {
             string errors = "";
             foreach (var err in roleRes.Errors)
             {
@@ -82,21 +87,14 @@ public class AuthService : IAuthService
             }
             throw new InvalidOperationCustomException(errors);
         }
-        catch (InvalidOperationCustomException)
-        {
-            await _userManager.DeleteAsync(user);
-            throw new InvalidOperationCustomException("Error adding user to role");
-        }
-        catch (Exception)
-        {
-            await _userManager.DeleteAsync(user);
-            throw new NotFoundCustomException("Role not found");
-        }
+
+        await _emailService.SendWelcomeEmailAsync(user.Email);
 
         return new ResponseDTO
         {
             Message = "User created successfully",
-            Success = true
+            Success = true,
+            StatusCode = StatusCodes.Status201Created
         };
     }
 

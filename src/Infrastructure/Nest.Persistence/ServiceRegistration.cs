@@ -21,7 +21,7 @@ public static class ServiceRegistration
         services.AddIdentity<AppUser, AppRole>(options =>
         {
             options.Password.RequireDigit = false;
-            options.Password.RequiredLength = 4;
+            options.Password.RequiredLength = 8;
             options.Password.RequireLowercase = false;
             options.Password.RequireUppercase = false;
             options.Password.RequireNonAlphanumeric = false;

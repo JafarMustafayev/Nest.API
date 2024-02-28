@@ -1,7 +1,4 @@
-﻿using MimeKit.Cryptography;
-using System.Linq.Expressions;
-
-namespace Nest.Infrastructure.Services.MailSender;
+﻿namespace Nest.Infrastructure.Services.MailSender;
 
 public class CustomMailService : ICustomMailService
 {

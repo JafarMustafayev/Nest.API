@@ -7,7 +7,7 @@ public static class ServiceRegistration
 {
     public static void AddPersistenceServices(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(ContactMaper).Assembly);
+        services.AddAutoMapper(typeof(ContactMapper).Assembly);
         services.AddReadRepositories();
         services.AddServices();
         services.AddWriteRepositories();

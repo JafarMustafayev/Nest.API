@@ -1,8 +1,8 @@
 ﻿namespace Nest.Persistence.MapperProfile;
 
-public class ContactMaper : Profile
+public class ContactMapper : Profile
 {
-    public ContactMaper()
+    public ContactMapper()
     {
         CreateMap<Contact, GetSingleContactDTO>().ReverseMap();
         CreateMap<Contact, GetSingleContactForTableDTO>().ReverseMap();

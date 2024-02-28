@@ -1,9 +1,8 @@
 ﻿namespace Nest.Domain.Entities.Identity;
 
-public class AppUser : IdentityUser
+public class AppUser : IdentityUser<string>
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string FullName { get; set; }
 
     public DateTime? RefreshTokenExpiredDate { get; set; }
     public string? RefreshToken { get; set; }

@@ -10,3 +10,4 @@ global using Nest.Infrastructure;
 global using Nest.Infrastructure.Services.Storage.Local;
 global using Nest.Persistence;
 global using System.Net;
+global using Nest.Application.DTOs.AuthDTOs;

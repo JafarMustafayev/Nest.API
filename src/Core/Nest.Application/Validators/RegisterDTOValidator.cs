@@ -33,7 +33,7 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
             .MaximumLength(64).WithMessage("Pasword cannot be longer than 64 characters");
     }
 
-    private bool BeAvailableUserName(string username)
+    private static bool BeAvailableUserName(string username)
     {
         if (username != null)
         {
@@ -50,7 +50,7 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
         return false;
     }
 
-    private bool BeAvailableFullName(string fullName)
+    private static bool BeAvailableFullName(string fullName)
     {
         if (fullName != null)
         {
@@ -67,7 +67,7 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
         return false;
     }
 
-    private bool BeAvailablePhoneNumber(string number)
+    private static bool BeAvailablePhoneNumber(string number)
     {
         if (number != null)
         {

@@ -5,7 +5,13 @@ public class AzureStorage : IAzureStorage
     private readonly BlobServiceClient _blobServiceClient;
     private BlobContainerClient _blobContainerClient;
 
-    public async Task DeleteAsync(string containerName, string fileName)
+    public AzureStorage(BlobServiceClient blobServiceClient, BlobContainerClient blobContainerClient)
+    {
+        _blobServiceClient = blobServiceClient;
+        _blobContainerClient = blobContainerClient;
+    }
+
+    public async Task Delete(string containerName, string fileName)
     {
         _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
         BlobClient blobClient = _blobContainerClient.GetBlobClient(fileName);

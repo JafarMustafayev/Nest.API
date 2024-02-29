@@ -13,6 +13,7 @@ builder.Services.AddStorage<LocalStorage>();
 
 builder.Services.AddPersistenceServices();
 builder.Services.AddInfrastructureServices();
+
 builder.Services.AddApplicationServices();
 
 builder.Services.AddCors(options =>

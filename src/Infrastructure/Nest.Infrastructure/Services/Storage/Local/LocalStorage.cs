@@ -15,7 +15,7 @@ public class LocalStorage : ILocalStorage
         return directory.GetFiles().Select(f => f.Name).ToList();
     }
 
-    public async Task DeleteAsync(string path, string fileName)
+    public async Task Delete(string path, string fileName)
     {
         File.Delete(Path.Combine(_webHostEnvironment.WebRootPath, path, fileName));
     }
@@ -62,17 +62,10 @@ public class LocalStorage : ILocalStorage
 
     private async Task<bool> CopyFileAsync(string path, IFormFile file)
     {
-        try
-        {
-            await using FileStream fileStream = new(path, FileMode.Create, FileAccess.Write, FileShare.None, 1024 * 1024, useAsync: false);
+        await using FileStream fileStream = new(path, FileMode.Create, FileAccess.Write, FileShare.None, 1024 * 1024, useAsync: false);
 
-            await file.CopyToAsync(fileStream);
-            await fileStream.FlushAsync();
-            return true;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
+        await file.CopyToAsync(fileStream);
+        await fileStream.FlushAsync();
+        return true;
     }
 }

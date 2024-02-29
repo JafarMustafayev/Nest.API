@@ -41,7 +41,7 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
         return query;
     }
 
-    public IQueryable<T> GetAllByExpression(Expression<Func<T, bool>> expression, int page, int take, bool isTracking = true, Expression<Func<T, object>>? OrderBy = null, List<Expression<Func<T, object>>> includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)>? thenIncludes = null)
+    public IQueryable<T> GetAllByExpression(Expression<Func<T, bool>> expression, int page, int take, bool isTracking = true, Expression<Func<T, object>>? OrderBy = null, List<Expression<Func<T, object>>>? includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)>? thenIncludes = null)
     {
         var query = Table.Where(expression).AsQueryable();
 
@@ -73,7 +73,7 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
         return query;
     }
 
-    public async Task<T?> GetSingleByExpressionAsync(Expression<Func<T, bool>> expression, bool isTracking = true, List<Expression<Func<T, object>>> includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)> thenIncludes = null)
+    public async Task<T?> GetSingleByExpressionAsync(Expression<Func<T, bool>> expression, bool isTracking = true, List<Expression<Func<T, object>>>? includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)>? thenIncludes = null)
     {
         var query = isTracking ? Table : Table.AsNoTracking();
 
@@ -97,7 +97,7 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
         return res;
     }
 
-    public async Task<T?> GetByIdAsync(string id, bool isTracking = true, List<Expression<Func<T, object>>> includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)> thenIncludes = null)
+    public async Task<T?> GetByIdAsync(string? id = null, bool isTracking = true, List<Expression<Func<T, object>>>? includes = null, List<(Expression<Func<T, object>>? include, Expression<Func<object, object>>? thenInclude)>? thenIncludes = null)
     {
         var query = isTracking ? Table : Table.AsNoTracking();
 

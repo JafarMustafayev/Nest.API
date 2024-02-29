@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Nest.Infrastructure;
+﻿namespace Nest.Infrastructure;
 
 internal static class Configuration
 {

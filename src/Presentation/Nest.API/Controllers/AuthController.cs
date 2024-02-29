@@ -25,35 +25,35 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("confirm-email")]
+    [HttpPost("confirmemail")]
     public async Task<IActionResult> ConfirmEmail([FromForm] ConfirmEmailDTO confirmEmailDTO)
     {
         var response = await _authService.ConfirmEmailAsync(confirmEmailDTO);
         return Ok(response);
     }
 
-    [HttpGet("forgot-password")]
+    [HttpGet("forgotpassword")]
     public async Task<IActionResult> ForgotPassword([FromQuery] string email)
     {
         var response = await _authService.ForgotPasswordAsync(email);
         return Ok(response);
     }
 
-    [HttpPost("refresh-token-login")]
-    public async Task<IActionResult> RefreshTokenLogin([FromForm] string token)
+    [HttpPost("refreshtokenlogin")]
+    public async Task<IActionResult> RefreshTokenLogin([FromForm] string refreshToken)
     {
-        var response = await _authService.RefreshTokenLoginAsync(token);
+        var response = await _authService.RefreshTokenLoginAsync(refreshToken);
         return Ok(response);
     }
 
-    [HttpPost("verify-reset-token")]
+    [HttpPost("verifyresettoken")]
     public async Task<IActionResult> VerifyResetToken([FromForm] VerifyResetTokenDTO verifyResetTokenDTO)
     {
         var response = await _authService.VerifyResetToken(verifyResetTokenDTO);
         return Ok(response);
     }
 
-    [HttpPost("reset-password")]
+    [HttpPost("resetpassword")]
     public async Task<IActionResult> ResetPassword([FromForm] UpdatePasswordDTO updatePasswordDTO)
     {
         var response = await _authService.ResetPasswordAsync(updatePasswordDTO);

@@ -25,3 +25,5 @@ global using Nest.Persistence.Implementations.Services;
 global using Nest.Application.DTOs.AuthDTOs;
 global using Nest.Application.Consts;
 global using Nest.Application.Helper;
+global using Nest.Persistence.Implementations.Repositories.ContactRepositories;
+global using Nest.Application.Abstractions.TokenHandlerService;

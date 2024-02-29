@@ -11,3 +11,8 @@ global using Nest.Infrastructure.Services.Storage.Local;
 global using Nest.Persistence;
 global using System.Net;
 global using Nest.Application.DTOs.AuthDTOs;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.IdentityModel.Tokens;
+global using Nest.API.Middlewares;
+global using Nest.Application.Helper;
+global using System.Text;

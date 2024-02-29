@@ -15,3 +15,4 @@ global using Nest.Domain.Entities.Common;
 global using System.Linq.Expressions;
 global using System.Text;
 global using Nest.Application.DTOs.AuthDTOs;
+global using Nest.Domain.Entities.Identity;

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using System.Numerics;
-
-namespace Nest.Persistence.Implementations.Services;
+﻿namespace Nest.Persistence.Implementations.Services;
 
 public class AuthService : IAuthService
 {
@@ -11,13 +8,17 @@ public class AuthService : IAuthService
     private readonly ICustomMailService _mailService;
     private readonly IMapper _mapper;
     private readonly IConfiguration _config;
+    private readonly ITokenHandler _tokenHandler;
+    private readonly IUserService _userService;
 
     public AuthService(UserManager<AppUser> userManager,
                        RoleManager<AppRole> roleManager,
                        SignInManager<AppUser> signInManager,
                        ICustomMailService emailService,
                        IMapper mapper,
-                       IConfiguration config)
+                       IConfiguration config,
+                       ITokenHandler tokenHandler,
+                       IUserService userService)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -25,6 +26,8 @@ public class AuthService : IAuthService
         _mailService = emailService;
         _mapper = mapper;
         _config = config;
+        _tokenHandler = tokenHandler;
+        _userService = userService;
     }
 
     public async Task<ResponseDTO> RegisterAsync(RegisterDTO registerDTO)
@@ -113,14 +116,82 @@ public class AuthService : IAuthService
         };
     }
 
-    public Task<Token> LoginAsync(LoginDTO loginDTO)
+    public async Task<ResponseDTO> LoginAsync(LoginDTO loginDTO)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByEmailAsync(loginDTO.EmailOrUsername);
+
+        if (user == null)
+        {
+            user = await _userManager.FindByNameAsync(loginDTO.EmailOrUsername);
+            if (user == null)
+            {
+                return new()
+                {
+                    Errors = null,
+                    Payload = null,
+                    Success = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "UserName or Password is invalid"
+                };
+            }
+        }
+
+        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
+
+        if (!result.Succeeded)
+        {
+            return new()
+            {
+                Errors = null,
+                Payload = null,
+                Success = false,
+                StatusCode = StatusCodes.Status400BadRequest,
+                Message = "UserName or Password is invalid"
+            };
+        }
+
+        var token = await _tokenHandler.CreateTokenAsync(user);
+
+        var min = Int32.Parse(Configuration.JwtData["AccessTokenExpirationMinute"]);
+
+        await _userService.UpdateRefreshToken(user, token.RefreshToken, token.Expiration, min);
+
+        return new()
+        {
+            Errors = null,
+            Payload = token,
+            Success = true,
+            StatusCode = StatusCodes.Status200OK,
+            Message = "Login successfully"
+        };
     }
 
-    public Task<Token> RefreshTokenLoginAsync(string token)
+    public async Task<ResponseDTO> RefreshTokenLoginAsync(string refreshToken)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
+
+        if (user == null)
+        {
+            throw new InvalidOperationCustomException("Invalid refresh token");
+        }
+
+        if (user.RefreshTokenExpiredDate < DateTime.UtcNow)
+        {
+            throw new InvalidOperationCustomException("Refresh token expired");
+        }
+
+        var newToken = await _tokenHandler.CreateTokenAsync(user);
+        var min = Int32.Parse(Configuration.JwtData["AccessTokenExpirationMinute"]);
+        await _userService.UpdateRefreshToken(user, newToken.RefreshToken, newToken.Expiration, min);
+
+        return new()
+        {
+            Errors = null,
+            Payload = newToken,
+            Success = true,
+            StatusCode = StatusCodes.Status200OK,
+            Message = "Token refreshed successfully"
+        };
     }
 
     public async Task<ResponseDTO> ForgotPasswordAsync(string email)

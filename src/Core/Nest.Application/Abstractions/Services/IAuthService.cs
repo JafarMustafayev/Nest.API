@@ -2,7 +2,7 @@
 
 public interface IAuthService
 {
-    Task<Token> LoginAsync(LoginDTO loginDTO);
+    Task<ResponseDTO> LoginAsync(LoginDTO loginDTO);
 
     Task<ResponseDTO> RegisterAsync(RegisterDTO registerDTO);
 
@@ -10,7 +10,7 @@ public interface IAuthService
 
     Task<ResponseDTO> ConfirmEmailAsync(ConfirmEmailDTO confirmEmailDTO);
 
-    Task<Token> RefreshTokenLoginAsync(string token);
+    Task<ResponseDTO> RefreshTokenLoginAsync(string token);
 
     Task<ResponseDTO> VerifyResetToken(VerifyResetTokenDTO verifyResetTokenDTO);
 

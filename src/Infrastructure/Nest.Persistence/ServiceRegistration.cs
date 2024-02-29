@@ -1,7 +1,4 @@
-﻿using Nest.Persistence.Implementations.Repositories.ContactRepositories;
-using Org.BouncyCastle.Asn1.X509.Qualified;
-
-namespace Nest.Persistence;
+﻿namespace Nest.Persistence;
 
 public static class ServiceRegistration
 {
@@ -47,5 +44,6 @@ public static class ServiceRegistration
         services.AddScoped<ICustomMailService, CustomMailService>();
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
     }
 }

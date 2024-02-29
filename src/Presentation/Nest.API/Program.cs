@@ -1,5 +1,3 @@
-using Nest.API.Middlewares;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,6 +24,35 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(opt =>
+{
+    opt.SaveToken = true;
+    opt.RequireHttpsMetadata = false;
+
+    opt.TokenValidationParameters = new()
+    {
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+
+        LifetimeValidator = (before, expires, token, param) =>
+        {
+            return expires > DateTime.UtcNow;
+        }
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +64,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

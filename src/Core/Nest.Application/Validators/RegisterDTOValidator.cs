@@ -34,7 +34,7 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
     {
         if (username != null)
         {
-            var available = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
+            var available = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._";
             foreach (var item in username)
             {
                 if (!available.Contains(item))
@@ -51,7 +51,7 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
     {
         if (fullName != null)
         {
-            var available = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+            var available = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ '";
             foreach (var item in fullName)
             {
                 if (!available.Contains(item))
@@ -68,9 +68,10 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
     {
         if (number != null)
         {
+            var available = "+-0123456789";
             foreach (var item in number)
             {
-                if (!Char.IsDigit(item))
+                if (!available.Contains(item))
                 {
                     return false;
                 }

@@ -9,6 +9,26 @@ public class CustomMailService : ICustomMailService
         _mailSettings = mailSettings.Value;
     }
 
+    public async Task SendWelcomeEmailAsync(string to, string? confirmationUrl = null)
+    {
+        MailRequest request = new()
+        {
+            To = to,
+            Subject = "Welcome to Nest",
+        };
+
+        if (confirmationUrl != null)
+        {
+            request.Body = $"<h1>Welcome to Nest</h1><p>Please confirm your email by clicking <a href='{confirmationUrl}'>here</a></p>";
+        }
+        else
+        {
+            request.Body = "<h1>Welcome to Nest</h1>";
+        }
+
+        await SendEmailAsync(request);
+    }
+
     public async Task SendEmailAsync(MailRequest mailRequest)
     {
         var email = new MimeMessage();
@@ -61,18 +81,6 @@ public class CustomMailService : ICustomMailService
             To = to,
             Subject = subject,
             Body = "<h1>Thank you for contacting us</h1>"
-        };
-
-        await SendEmailAsync(request);
-    }
-
-    public async Task SendWelcomeEmailAsync(string to)
-    {
-        MailRequest request = new()
-        {
-            To = to,
-            Subject = "Welcome to Nest",
-            Body = "<h1>Welcome to Nest</h1>"
         };
 
         await SendEmailAsync(request);

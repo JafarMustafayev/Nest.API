@@ -25,17 +25,17 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromForm] ForgotPasswordDTO forgotPasswordDTO)
-    {
-        var response = await _authService.ForgotPasswordAsync(forgotPasswordDTO);
-        return Ok(response);
-    }
-
     [HttpPost("confirm-email")]
     public async Task<IActionResult> ConfirmEmail([FromForm] ConfirmEmailDTO confirmEmailDTO)
     {
         var response = await _authService.ConfirmEmailAsync(confirmEmailDTO);
+        return Ok(response);
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromForm] ForgotPasswordDTO forgotPasswordDTO)
+    {
+        var response = await _authService.ForgotPasswordAsync(forgotPasswordDTO);
         return Ok(response);
     }
 

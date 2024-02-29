@@ -1,46 +1,27 @@
-﻿using Nest.Application.Consts;
-
-namespace Nest.Persistence.Implementations.Services;
+﻿namespace Nest.Persistence.Implementations.Services;
 
 public class AuthService : IAuthService
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<AppRole> _roleManager;
     private readonly SignInManager<AppUser> _signInManager;
-    private readonly ICustomMailService _emailService;
+    private readonly ICustomMailService _mailService;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _config;
 
     public AuthService(UserManager<AppUser> userManager,
                        RoleManager<AppRole> roleManager,
                        SignInManager<AppUser> signInManager,
                        ICustomMailService emailService,
-                       IMapper mapper)
+                       IMapper mapper,
+                       IConfiguration config)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _signInManager = signInManager;
-        _emailService = emailService;
+        _mailService = emailService;
         _mapper = mapper;
-    }
-
-    public Task<ResponseDTO> ConfirmEmailAsync(ConfirmEmailDTO confirmEmailDTO)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ResponseDTO> ForgotPasswordAsync(ForgotPasswordDTO forgotPasswordDTO)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Token> LoginAsync(LoginDTO loginDTO)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Token> RefreshTokenLoginAsync(string token)
-    {
-        throw new NotImplementedException();
+        _config = config;
     }
 
     public async Task<ResponseDTO> RegisterAsync(RegisterDTO registerDTO)
@@ -88,17 +69,63 @@ public class AuthService : IAuthService
             throw new InvalidOperationCustomException(errors);
         }
 
-        await _emailService.SendWelcomeEmailAsync(user.Email);
+        var conToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var conUrl = $"{_config["Urls:Client"]}/auth/confirm-email?email={user.Email.Encode()}&token={conToken.Encode()}";
+
+        await _mailService.SendWelcomeEmailAsync(user.Email, conUrl);
 
         return new ResponseDTO
         {
-            Message = "User created successfully",
+            Message = "User successfully created, please check your email",
             Success = true,
             StatusCode = StatusCodes.Status201Created
         };
     }
 
+    public async Task<ResponseDTO> ConfirmEmailAsync(ConfirmEmailDTO confirmEmailDTO)
+    {
+        var email = confirmEmailDTO.Email.Decode();
+
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
+        {
+            throw new NotFoundCustomException("User not found");
+        }
+
+        var result = await _userManager.ConfirmEmailAsync(user, confirmEmailDTO.Token.Decode());
+
+        if (!result.Succeeded)
+        {
+            throw new InvalidOperationCustomException("Invalid token");
+        }
+
+        await _userManager.UpdateSecurityStampAsync(user);
+
+        return new ResponseDTO
+        {
+            Message = "Email confirmed successfully",
+            Success = true,
+            StatusCode = StatusCodes.Status200OK
+        };
+    }
+
+    public Task<Token> LoginAsync(LoginDTO loginDTO)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Token> RefreshTokenLoginAsync(string token)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<bool> VerifyResetToken(VerifyResetTokenDTO verifyResetTokenDTO)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ResponseDTO> ForgotPasswordAsync(ForgotPasswordDTO forgotPasswordDTO)
     {
         throw new NotImplementedException();
     }

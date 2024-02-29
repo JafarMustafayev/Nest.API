@@ -23,3 +23,5 @@ global using Microsoft.AspNetCore.Http;
 global using Nest.Infrastructure.Services.MailSender;
 global using Nest.Persistence.Implementations.Services;
 global using Nest.Application.DTOs.AuthDTOs;
+global using Nest.Application.Consts;
+global using Nest.Application.Helper;

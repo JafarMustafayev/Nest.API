@@ -14,7 +14,9 @@ public class UpdatePasswordDTOValidator : AbstractValidator<UpdatePasswordDTO>
             .MinimumLength(8).WithMessage("Password cannot be shorter than 8 characters");
 
         RuleFor(x => x.ResetToken)
-            .NotEmpty().WithMessage("Token is required")
-            .NotNull().WithMessage("Token is required");
+            .NotNull().WithMessage("Password is required")
+            .NotEmpty().WithMessage("Password is required")
+            .MinimumLength(8).WithMessage("Password cannot be shorter than 8 characters")
+            .MaximumLength(64).WithMessage("Pasword cannot be longer than 64 characters");
     }
 }

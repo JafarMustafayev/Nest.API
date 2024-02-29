@@ -32,10 +32,10 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromForm] ForgotPasswordDTO forgotPasswordDTO)
+    [HttpGet("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromQuery] string email)
     {
-        var response = await _authService.ForgotPasswordAsync(forgotPasswordDTO);
+        var response = await _authService.ForgotPasswordAsync(email);
         return Ok(response);
     }
 
@@ -50,6 +50,13 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> VerifyResetToken([FromForm] VerifyResetTokenDTO verifyResetTokenDTO)
     {
         var response = await _authService.VerifyResetToken(verifyResetTokenDTO);
+        return Ok(response);
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromForm] UpdatePasswordDTO updatePasswordDTO)
+    {
+        var response = await _authService.ResetPasswordAsync(updatePasswordDTO);
         return Ok(response);
     }
 }

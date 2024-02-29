@@ -6,11 +6,13 @@ public interface IAuthService
 
     Task<ResponseDTO> RegisterAsync(RegisterDTO registerDTO);
 
-    Task<ResponseDTO> ForgotPasswordAsync(ForgotPasswordDTO forgotPasswordDTO);
+    Task<ResponseDTO> ForgotPasswordAsync(string email);
 
     Task<ResponseDTO> ConfirmEmailAsync(ConfirmEmailDTO confirmEmailDTO);
 
     Task<Token> RefreshTokenLoginAsync(string token);
 
-    Task<bool> VerifyResetToken(VerifyResetTokenDTO verifyResetTokenDTO);
+    Task<ResponseDTO> VerifyResetToken(VerifyResetTokenDTO verifyResetTokenDTO);
+
+    Task<ResponseDTO> ResetPasswordAsync(UpdatePasswordDTO updatePasswordDTO);
 }

@@ -62,6 +62,18 @@ public class CustomMailService : ICustomMailService
         smtp.Disconnect(true);
     }
 
+    public async Task SendEmailForForgotPasswordAsync(string to, string url)
+    {
+        MailRequest request = new()
+        {
+            To = to,
+            Subject = "Reset password",
+            Body = $"<h1>Reset password</h1><p>Please reset password by clicking <a href='{url}'>here</a></p>"
+        };
+
+        await SendEmailAsync(request);
+    }
+
     public async Task SendEmailForContactAsync(string to, string subject, string message)
     {
         MailRequest request = new()

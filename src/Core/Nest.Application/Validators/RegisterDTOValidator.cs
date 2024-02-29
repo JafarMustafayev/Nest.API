@@ -6,6 +6,7 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
     {
         RuleFor(x => x.UserName)
             .MaximumLength(50).WithMessage("Username cannot be longer than 50 characters")
+            .MinimumLength(5).WithMessage("Username cannot be shorter than 5 characters")
             .NotEmpty().WithMessage("Username is required")
             .NotNull().WithMessage("Username is required")
             .Must(x => BeAvailableUserName(x)).WithMessage("Some characters are useless");
@@ -22,12 +23,13 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
             .NotNull().WithMessage("Fullname is required")
             .NotEmpty().WithMessage("Fullname is required")
             .MaximumLength(100).WithMessage("Fullname cannot be longer than 100 characters")
+            .MinimumLength(5).WithMessage("Fullname cannot be shorter than 5 characters")
             .Must(x => BeAvailableFullName(x));
 
         RuleFor(x => x.ConfirmatedPassword)
             .NotNull().WithMessage("Password is required")
-            .NotNull().WithMessage("Password is required")
-            .MinimumLength(8).WithMessage("min 8 ");
+            .NotEmpty().WithMessage("Password is required")
+            .MinimumLength(8).WithMessage("Password cannot be shorter than 8 characters");
     }
 
     private bool BeAvailableUserName(string username)

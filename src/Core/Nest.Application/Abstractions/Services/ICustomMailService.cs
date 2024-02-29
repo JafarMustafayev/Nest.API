@@ -6,7 +6,7 @@ public interface ICustomMailService
 
     Task SendWelcomeEmailAsync(string to, string? confirmationUrl = null);
 
-    //Task SendEmailForForgotPasswordAsync( string to, string token );
+    Task SendEmailForForgotPasswordAsync(string to, string url);
 
     Task SendEmailForContactAtMomentAsync(string to, string subject);
 

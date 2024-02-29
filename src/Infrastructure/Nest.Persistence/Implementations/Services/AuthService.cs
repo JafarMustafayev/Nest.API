@@ -1,4 +1,7 @@
-﻿namespace Nest.Persistence.Implementations.Services;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.Numerics;
+
+namespace Nest.Persistence.Implementations.Services;
 
 public class AuthService : IAuthService
 {
@@ -120,13 +123,90 @@ public class AuthService : IAuthService
         throw new NotImplementedException();
     }
 
-    public Task<bool> VerifyResetToken(VerifyResetTokenDTO verifyResetTokenDTO)
+    public async Task<ResponseDTO> ForgotPasswordAsync(string email)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
+        {
+            throw new NotFoundCustomException("User not found");
+        }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        var resetUrl = $"{_config["Urls:Client"]}/auth/reset-password?userId={user.Id.Encode()}&token={token.Encode()}";
+
+        await _mailService.SendEmailForForgotPasswordAsync(user.Email, resetUrl);
+
+        return new ResponseDTO
+        {
+            Message = "Email sent successfully,please check your email",
+            Success = true,
+            StatusCode = StatusCodes.Status200OK
+        };
     }
 
-    public Task<ResponseDTO> ForgotPasswordAsync(ForgotPasswordDTO forgotPasswordDTO)
+    public async Task<ResponseDTO> VerifyResetToken(VerifyResetTokenDTO verifyResetTokenDTO)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByIdAsync(verifyResetTokenDTO.UserId.Decode());
+
+        if (user == null)
+        {
+            throw new NotFoundCustomException("User not found");
+        }
+
+        var res = await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", verifyResetTokenDTO.ResetToken.Decode());
+
+        if (!res)
+        {
+            throw new InvalidOperationCustomException("Invalid token");
+        }
+
+        return new()
+        {
+            Errors = null,
+            Payload = null,
+            Success = res,
+            StatusCode = StatusCodes.Status200OK,
+            Message = "Token verified successfully"
+        };
+    }
+
+    public async Task<ResponseDTO> ResetPasswordAsync(UpdatePasswordDTO updatePasswordDTO)
+    {
+        var user = await _userManager.FindByIdAsync(updatePasswordDTO.UserId.Decode());
+
+        if (user == null)
+        {
+            throw new NotFoundCustomException("User not found");
+        }
+
+        var resVerify = await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", updatePasswordDTO.ResetToken.Decode());
+
+        if (!resVerify)
+        {
+            throw new InvalidOperationCustomException("Invalid token");
+        }
+
+        var res = await _userManager.ResetPasswordAsync(user, updatePasswordDTO.ResetToken.Decode(), updatePasswordDTO.NewPassword);
+
+        await _userManager.UpdateSecurityStampAsync(user);
+
+        if (!res.Succeeded)
+        {
+            string errors = "";
+            foreach (var err in res.Errors)
+            {
+                errors += err.Description + "\n";
+            }
+            throw new InvalidOperationCustomException(errors);
+        }
+
+        return new ResponseDTO
+        {
+            Message = "Password reset successfully",
+            Success = true,
+            StatusCode = StatusCodes.Status200OK
+        };
     }
 }

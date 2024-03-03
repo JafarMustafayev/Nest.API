@@ -47,7 +47,7 @@ public class AuthService : IAuthService
         }
 
         user = _mapper.Map<AppUser>(registerDTO);
-        var res = await _userManager.CreateAsync(user, registerDTO.ConfirmatedPassword);
+        var res = await _userManager.CreateAsync(user, registerDTO.Password);
         if (!res.Succeeded)
         {
             string errors = "";
@@ -76,7 +76,7 @@ public class AuthService : IAuthService
         }
 
         var conToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var conUrl = $"{_config["Urls:Client"]}/auth/confirm-email?email={user.Email.Encode()}&token={conToken.Encode()}";
+        var conUrl = $"{_config["Urls:Client"]}Nest/mailconfirmation.html?email={user.Email.Encode()}&token={conToken.Encode()}";
 
         await _mailService.SendWelcomeEmailAsync(user.Email, conUrl);
 
@@ -205,7 +205,7 @@ public class AuthService : IAuthService
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-        var resetUrl = $"{_config["Urls:Client"]}/auth/reset-password?userId={user.Id.Encode()}&token={token.Encode()}";
+        var resetUrl = $"{_config["Urls:Client"]}Nest/resetpassword.html?userId={user.Id.Encode()}&token={token.Encode()}";
 
         await _mailService.SendEmailForForgotPasswordAsync(user.Email, resetUrl);
 

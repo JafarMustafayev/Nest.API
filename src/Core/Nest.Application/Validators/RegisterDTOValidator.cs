@@ -26,7 +26,7 @@ public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
             .MinimumLength(5).WithMessage("Fullname cannot be shorter than 5 characters")
             .Must(x => BeAvailableFullName(x));
 
-        RuleFor(x => x.ConfirmatedPassword)
+        RuleFor(x => x.Password)
             .NotNull().WithMessage("Password is required")
             .NotEmpty().WithMessage("Password is required")
             .MinimumLength(8).WithMessage("Password cannot be shorter than 8 characters")

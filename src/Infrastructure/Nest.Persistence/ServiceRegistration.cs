@@ -32,11 +32,15 @@ public static class ServiceRegistration
     public static void AddReadRepositories(this IServiceCollection services)
     {
         services.AddScoped<IContactReadRepository, ContactReadRepository>();
+        services.AddScoped<IProductReadRepository, ProductReadRepository>();
+        services.AddScoped<IVendorReadRepository, VendorReadRepository>();
     }
 
     public static void AddWriteRepositories(this IServiceCollection services)
     {
         services.AddScoped<IContactWriteReposiyory, ContactWriteRepository>();
+        services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
+        services.AddScoped<IVendorWriteRepository, VendorWriteRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)
@@ -45,5 +49,7 @@ public static class ServiceRegistration
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IVendorService, VendorService>();
+        services.AddScoped<IProductService, ProductService>();
     }
 }

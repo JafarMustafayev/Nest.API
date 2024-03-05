@@ -19,9 +19,12 @@ public class VendorConfiguration : IEntityTypeConfiguration<Vendor>
 
         builder.Property(v => v.Description)
             .IsRequired()
-            .HasMaxLength(500);
+            .HasMaxLength(5000);
 
-        builder.Property(v => v.Image)
+        builder.Property(v => v.ImageName)
+            .HasMaxLength(200);
+
+        builder.Property(v => v.ImagePath)
             .HasMaxLength(200);
 
         builder.HasMany(v => v.Products)

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\Infrastructure\Nest.Persistence\Nest.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Vendors\" />
+  </ItemGroup>
+
 </Project>

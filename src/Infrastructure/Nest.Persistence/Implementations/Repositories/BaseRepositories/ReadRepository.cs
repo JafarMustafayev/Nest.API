@@ -13,7 +13,9 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
 
     public IQueryable<T> GetAll(int page, int take, bool isTracking = true, Expression<Func<T, object>>? OrderBy = null, List<Expression<Func<T, object>>>? includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)>? thenIncludes = null)
     {
-        var query = isTracking ? Table : Table.AsNoTracking();
+        var query = Table.AsQueryable();
+
+        query = isTracking ? Table : Table.AsNoTracking();
 
         if (includes != null)
         {
@@ -43,7 +45,7 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
 
     public IQueryable<T> GetAllByExpression(Expression<Func<T, bool>> expression, int page, int take, bool isTracking = true, Expression<Func<T, object>>? OrderBy = null, List<Expression<Func<T, object>>>? includes = null, List<(Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)>? thenIncludes = null)
     {
-        var query = Table.Where(expression).AsQueryable();
+        var query = Table.AsQueryable();
 
         if (includes != null)
         {
@@ -67,6 +69,8 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
         {
             query = query.OrderBy(OrderBy);
         }
+
+        query = query.Where(expression);
 
         query = query.Skip((page - 1) * take).Take(take);
 

@@ -14,8 +14,8 @@ public class StorageService : IStorageService
 
     public string StorageName { get => _storage.GetType().Name; }
 
-    public async Task Delete(string pathOrContainerName, string fileName)
-        => await _storage.Delete(pathOrContainerName, fileName);
+    public async Task DeleteAsync(string pathOrContainerName, string fileName)
+        => await _storage.DeleteAsync(pathOrContainerName, fileName);
 
     public List<string> GetFiles(string pathOrContainerName)
         => _storage.GetFiles(pathOrContainerName);

@@ -1,5 +1,5 @@
 ﻿namespace Nest.Application.Abstractions.Repositories.VendorRepositories;
 
-public interface IVendeoReadRepository : IReadRepository<Vendor>
+public interface IVendorReadRepository : IReadRepository<Vendor>
 {
 }

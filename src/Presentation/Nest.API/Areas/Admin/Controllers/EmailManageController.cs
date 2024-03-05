@@ -1,12 +1,14 @@
-﻿namespace Nest.API.Areas.Admin.Controllers;
+﻿using Nest.Application.DTOs.Mail;
+
+namespace Nest.API.Areas.Admin.Controllers;
 
 [Route("api/admin/[controller]")]
 [ApiController]
-public class EmailController : ControllerBase
+public class EmailManageController : ControllerBase
 {
     private readonly ICustomMailService _mailService;
 
-    public EmailController(ICustomMailService mailService)
+    public EmailManageController(ICustomMailService mailService)
     {
         _mailService = mailService;
     }

@@ -8,13 +8,15 @@ public class Product : BaseEntity
 
     public double Price { get; set; }
 
-    //public string? Image { get; set; }
     public int Quantity { get; set; }
 
     public int CategoryId { get; set; }
 
     public string VendorId { get; set; }
+
     public Vendor Vendor { get; set; }
+
+    public ICollection<ProductImage> ProductImages { get; set; }
 }
 
 //public ICollection<Review> Reviews { get; set; }

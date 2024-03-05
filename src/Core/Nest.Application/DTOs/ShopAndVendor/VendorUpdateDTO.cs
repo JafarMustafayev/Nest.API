@@ -1,7 +1,8 @@
-﻿namespace Nest.Domain.Entities;
+﻿namespace Nest.Application.DTOs.ShopAndVendor;
 
-public class Vendor : BaseEntity
+public class VendorUpdateDTO
 {
+    public string Id { get; set; }
     public string Name { get; set; }
 
     public string? Email { get; set; }
@@ -12,9 +13,5 @@ public class Vendor : BaseEntity
 
     public string Description { get; set; }
 
-    public string? ImageName { get; set; }
-
-    public string? ImagePath { get; set; }
-
-    public ICollection<Product>? Products { get; set; }
+    public IFormFile? Image { get; set; }
 }

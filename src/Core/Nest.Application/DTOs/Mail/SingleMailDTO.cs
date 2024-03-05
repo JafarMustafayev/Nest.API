@@ -1,4 +1,4 @@
-﻿namespace Nest.Application.DTOs;
+﻿namespace Nest.Application.DTOs.Mail;
 
 public class SingleMailDTO
 {

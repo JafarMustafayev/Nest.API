@@ -39,11 +39,10 @@ public class AuthService : IAuthService
         if (user != null)
         {
             user = await _userManager.FindByNameAsync(registerDTO.UserName);
-
-            if (user != null)
-            {
-                throw new DuplicateCustomException("User already exists");
-            }
+        }
+        if (user != null)
+        {
+            throw new DuplicateCustomException("User already exists");
         }
 
         user = _mapper.Map<AppUser>(registerDTO);

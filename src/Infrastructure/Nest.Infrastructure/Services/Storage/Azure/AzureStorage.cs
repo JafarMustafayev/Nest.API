@@ -11,9 +11,9 @@ public class AzureStorage : IAzureStorage
         _blobContainerClient = blobContainerClient;
     }
 
-    public async Task DeleteAsync(string containerName, string fileName)
+    public async Task DeleteAsync(string fileName)
     {
-        _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        // _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
         BlobClient blobClient = _blobContainerClient.GetBlobClient(fileName);
         await blobClient.DeleteAsync();
     }

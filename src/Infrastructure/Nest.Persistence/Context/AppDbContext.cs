@@ -7,8 +7,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
     }
 
     public DbSet<Contact> Contacts { get; set; }
+
     public DbSet<Vendor> Vendors { get; set; }
+
     public DbSet<Product> Products { get; set; }
+
+    public DbSet<ProductImage> ProductImages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

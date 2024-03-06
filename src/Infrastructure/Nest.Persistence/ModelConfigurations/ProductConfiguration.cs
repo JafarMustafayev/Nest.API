@@ -10,11 +10,27 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.Description)
             .IsRequired(false)
-            .HasMaxLength(500);
+            .HasMaxLength(5000);
 
         builder.Property(p => p.Price)
             .IsRequired()
             .HasColumnType("decimal(18,2)");
+
+        builder.Property(p => p.Discount)
+            .IsRequired()
+            .HasDefaultValue(0);
+
+        builder.Property(p => p.Quantity)
+            .IsRequired()
+            .HasDefaultValue(0);
+
+        builder.Property(p => p.InStock)
+            .IsRequired()
+            .HasDefaultValue(true);
+
+        builder.Property(p => p.SKU)
+            .IsRequired()
+            .HasMaxLength(50);
 
         builder.HasOne(p => p.Vendor)
             .WithMany(v => v.Products)

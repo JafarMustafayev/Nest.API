@@ -1,6 +1,4 @@
-﻿using Nest.Application.DTOs.ShopAndVendor;
-
-namespace Nest.API.Areas.Admin.Controllers;
+﻿namespace Nest.API.Areas.Admin.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

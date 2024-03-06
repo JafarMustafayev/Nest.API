@@ -20,11 +20,11 @@ public static class ServiceRegistration
             options.Password.RequireDigit = false;
             options.Password.RequiredLength = 8;
             options.Password.RequireLowercase = false;
-            options.Password.RequireUppercase = false;
             options.Password.RequireNonAlphanumeric = false;
-            options.User.RequireUniqueEmail = true;
-            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._";
+            options.Password.RequireUppercase = false;
             options.SignIn.RequireConfirmedEmail = true;
+            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._";
+            options.User.RequireUniqueEmail = true;
         }).AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
     }
@@ -32,6 +32,7 @@ public static class ServiceRegistration
     public static void AddReadRepositories(this IServiceCollection services)
     {
         services.AddScoped<IContactReadRepository, ContactReadRepository>();
+        services.AddScoped<IProductImageReadRepository, ProductImageReadRepository>();
         services.AddScoped<IProductReadRepository, ProductReadRepository>();
         services.AddScoped<IVendorReadRepository, VendorReadRepository>();
     }
@@ -39,17 +40,18 @@ public static class ServiceRegistration
     public static void AddWriteRepositories(this IServiceCollection services)
     {
         services.AddScoped<IContactWriteReposiyory, ContactWriteRepository>();
+        services.AddScoped<IProductImageWriteRepository, ProductImageWriteRepository>();
         services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
         services.AddScoped<IVendorWriteRepository, VendorWriteRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped<ICustomMailService, CustomMailService>();
-        services.AddScoped<IContactService, ContactService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IContactService, ContactService>();
+        services.AddScoped<ICustomMailService, CustomMailService>();
+        services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IVendorService, VendorService>();
-        services.AddScoped<IProductService, ProductService>();
     }
 }

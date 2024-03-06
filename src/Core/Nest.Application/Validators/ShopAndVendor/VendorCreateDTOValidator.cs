@@ -1,4 +1,4 @@
-﻿namespace Nest.Application.Validators;
+﻿namespace Nest.Application.Validators.ShopAndVendor;
 
 public class VendorCreateDTOValidator : AbstractValidator<VendorCreateDTO>
 {

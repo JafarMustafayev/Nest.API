@@ -6,7 +6,7 @@ public interface IStorage
 
     Task<(string fileName, string pathOrContainerName)> UploadAsync(string pathOrContainerName, IFormFile file);
 
-    Task DeleteAsync(string pathOrContainerName, string fileName);
+    Task DeleteAsync(string fileName);
 
     List<string> GetFiles(string pathOrContainerName);
 

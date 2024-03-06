@@ -52,8 +52,7 @@ public class VendorService : IVendorService
     {
         List<(Expression<Func<Vendor, object>> include, Expression<Func<object, object>> thenInclude)> thenIncludes = new()
         {
-            // (x => x., x => ((CarFeature)x).Feature),
-            // (x => x.CarExtras, x => ((CarExtra)x).Extra),
+            (x => x.Products, x => ((Product)x).ProductImages)
         };
 
         var vendor = await _vendorReadRepository.GetByIdAsync(id, false, null, thenIncludes);
@@ -94,9 +93,9 @@ public class VendorService : IVendorService
 
         var vendor = _mapper.Map<Vendor>(createDTO);
 
-        (string fileName, string pathName) res = await _storageService.UploadAsync("Vendors", createDTO.Image);
+        (string fileName, string pathName) res = await _storageService.UploadAsync(FileContainerNameConsts.VendorImages, createDTO.Image);
 
-        vendor.ImageName = res.fileName;
+        vendor.ImageName = createDTO.Image.FileName;
         vendor.ImagePath = res.pathName;
 
         await _vendorWriteRepository.AddAsync(vendor);
@@ -140,14 +139,15 @@ public class VendorService : IVendorService
 
         if (updateDTO.Image != null)
         {
-            await _storageService.DeleteAsync("Vendors", vendor.ImageName);
+            await _storageService.DeleteAsync(vendor.ImageName);
 
-            (string fileName, string pathName) res = await _storageService.UploadAsync("Vendors", updateDTO.Image);
+            (string fileName, string pathName) res = await _storageService.UploadAsync(FileContainerNameConsts.VendorImages, updateDTO.Image);
 
-            vendor.ImageName = res.fileName;
+            vendor.ImageName = updateDTO.Image.FileName;
             vendor.ImagePath = res.pathName;
         }
 
+        vendor.UpdatedAt = DateTime.Now;
         _vendorWriteRepository.Update(vendor);
         await _vendorWriteRepository.SaveChangesAsync();
 
@@ -214,7 +214,7 @@ public class VendorService : IVendorService
         {
             foreach (var image in product.ProductImages)
             {
-                await _storageService.DeleteAsync("Products", image.ImageName);
+                await _storageService.DeleteAsync(image.ImageName);
             }
         }
 

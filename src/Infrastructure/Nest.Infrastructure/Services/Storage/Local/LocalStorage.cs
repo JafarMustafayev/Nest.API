@@ -15,9 +15,9 @@ public class LocalStorage : ILocalStorage
         return directory.GetFiles().Select(f => f.Name).ToList();
     }
 
-    public async Task DeleteAsync(string path, string fileName)
+    public async Task DeleteAsync(string fileName)
     {
-        File.Delete(Path.Combine(_webHostEnvironment.WebRootPath, path, fileName));
+        File.Delete(Path.Combine(_webHostEnvironment.WebRootPath, fileName));
     }
 
     public bool HasFile(string path, string fileName)

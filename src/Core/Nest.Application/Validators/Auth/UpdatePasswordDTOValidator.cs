@@ -1,4 +1,4 @@
-﻿namespace Nest.Application.Validators;
+﻿namespace Nest.Application.Validators.Auth;
 
 public class UpdatePasswordDTOValidator : AbstractValidator<UpdatePasswordDTO>
 {

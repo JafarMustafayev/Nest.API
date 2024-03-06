@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Nest.Application.Abstractions.Storage;
-
-namespace Nest.Infrastructure.Services.Storage;
+﻿namespace Nest.Infrastructure.Services.Storage;
 
 public class StorageService : IStorageService
 {
@@ -14,8 +11,8 @@ public class StorageService : IStorageService
 
     public string StorageName { get => _storage.GetType().Name; }
 
-    public async Task DeleteAsync(string pathOrContainerName, string fileName)
-        => await _storage.DeleteAsync(pathOrContainerName, fileName);
+    public async Task DeleteAsync(string fileName)
+        => await _storage.DeleteAsync(fileName);
 
     public List<string> GetFiles(string pathOrContainerName)
         => _storage.GetFiles(pathOrContainerName);

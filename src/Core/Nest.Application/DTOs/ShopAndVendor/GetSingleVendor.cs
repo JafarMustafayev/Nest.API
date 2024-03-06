@@ -18,5 +18,5 @@ public class GetSingleVendor
 
     public string ImageUrl { get; set; }
 
-    public ICollection<Product> Products { get; set; }
+    public ICollection<GetSingleProductForGrid> Products { get; set; }
 }

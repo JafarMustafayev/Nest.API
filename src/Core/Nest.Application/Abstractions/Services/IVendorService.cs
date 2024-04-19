@@ -6,6 +6,8 @@ public interface IVendorService
 
     Task<ResponseDTO> GetVendorByIdAsync(string id);
 
+    Task<ResponseDTO> SearchVendors(string query);
+
     Task<ResponseDTO> CreateVendorAsync(VendorCreateDTO vendor);
 
     Task<ResponseDTO> UpdateVendorAsync(VendorUpdateDTO vendor);

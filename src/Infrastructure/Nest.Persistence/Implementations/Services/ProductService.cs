@@ -54,14 +54,15 @@ public class ProductService : IProductService
 
     public async Task<ResponseDTO> GetProductByIdAsync(string id)
     {
-        Expression<Func<Product, bool>> expression = x => !x.IsDeleted;
+        Expression<Func<Product, bool>> expression = x => !x.IsDeleted && x.Id == id;
 
         List<Expression<Func<Product, object>>> includes = new()
         {
             x=>x.ProductImages,
+            //x=>x.Vendor
         };
 
-        List<(Expression<Func<Product, object>> include, Expression<Func<object, object>> thenInclude)> thenIncludes = new()
+        List<(Expression<Func<Product, object>> include, Expression<Func<object, object>> clude)> thenIncludes = new()
         {
             (x => x.Vendor, x => ((Vendor)x).Products)
         };
@@ -75,7 +76,7 @@ public class ProductService : IProductService
 
         var map = _mapper.Map<GetSingleProduct>(res);
 
-        var relatedProducts = _productReadRepository.GetAllByExpression(x => x.VendorId == res.VendorId && x.Id != res.Id, 1, 8, false, x => x.Name, includes);
+        var relatedProducts = _productReadRepository.GetAllByExpression(x => x.VendorId == res.VendorId && x.Id != res.Id && !x.IsDeleted, 1, 6, false, x => x.Name, includes);
 
         map.RelatedProducts = _mapper.Map<List<GetSingleProductForGrid>>(relatedProducts);
 
@@ -86,6 +87,95 @@ public class ProductService : IProductService
             Payload = map,
             StatusCode = StatusCodes.Status200OK,
             Success = true
+        };
+    }
+
+    public async Task<ResponseDTO> SearchProducts(string query)
+    {
+        if (query.Length < 3)
+        {
+            return new()
+            {
+                Errors = null,
+                Message = "Search query must be at least 3 characters long",
+                Payload = null,
+                StatusCode = StatusCodes.Status400BadRequest,
+                Success = false
+            };
+        }
+
+        Expression<Func<Product, bool>> expression = x => !x.IsDeleted && (x.Id.Contains(query) || x.Name.Contains(query));
+
+        Expression<Func<Product, object>> order = x => x.Name;
+
+        List<Expression<Func<Product, object>>> includes = new()
+        {
+            (x=>x.ProductImages)
+        };
+
+        var res = _productReadRepository.GetAllByExpression(expression, 1, 100, false, order, includes);
+
+        var map = _mapper.Map<List<GetSingleProductForGrid>>(res);
+
+        return new ResponseDTO
+        {
+            Payload = map,
+            Message = "Products retrieved successfully",
+            Success = true,
+            StatusCode = StatusCodes.Status200OK,
+            Errors = null
+        };
+    }
+
+    public async Task<ResponseDTO> SearchVendorProducts(string query, string vendorId)
+    {
+        if (query.Length < 3 || vendorId.Length < 32)
+        {
+            if (query.Length < 3)
+            {
+                return new()
+                {
+                    Errors = null,
+                    Message = "Search query must be at least 3 characters long",
+                    Payload = null,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Success = false
+                };
+            }
+            else
+            {
+                return new()
+                {
+                    Errors = null,
+                    Message = "Vendor Idis invalid",
+                    Payload = null,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Success = false
+                };
+            }
+        }
+
+        Expression<Func<Product, bool>> expression = x => !x.IsDeleted && x.VendorId == vendorId && (x.Id.Contains(query) || x.Name.Contains(query));
+
+        Expression<Func<Product, object>> order = x => x.Name;
+
+        List<Expression<Func<Product, object>>> includes = new()
+        {
+            (x=>x.ProductImages),
+            (x=>x.Vendor)
+        };
+
+        var res = _productReadRepository.GetAllByExpression(expression, 1, 100, false, order, includes);
+
+        var map = _mapper.Map<List<GetSingleProductForGrid>>(res);
+
+        return new ResponseDTO
+        {
+            Payload = map,
+            Message = "Products retrieved successfully",
+            Success = true,
+            StatusCode = StatusCodes.Status200OK,
+            Errors = null
         };
     }
 
@@ -138,6 +228,7 @@ public class ProductService : IProductService
         }
 
         _mapper.Map(product, productDb);
+        productDb.UpdatedAt = DateTime.UtcNow;
 
         _productWriteRepository.Update(productDb);
 
@@ -186,12 +277,12 @@ public class ProductService : IProductService
         }
 
         product.IsDeleted = true;
-        product.DeletedAt = DateTime.Now;
+        product.DeletedAt = DateTime.UtcNow;
 
         foreach (var image in product.ProductImages)
         {
             image.IsDeleted = true;
-            image.DeletedAt = DateTime.Now;
+            image.DeletedAt = DateTime.UtcNow;
             _productImageWriteRepository.Update(image);
         }
 
@@ -224,7 +315,7 @@ public class ProductService : IProductService
         }
 
         productImage.IsDeleted = true;
-        productImage.DeletedAt = DateTime.Now;
+        productImage.DeletedAt = DateTime.UtcNow;
         _productImageWriteRepository.Update(productImage);
 
         await _productImageWriteRepository.SaveChangesAsync();

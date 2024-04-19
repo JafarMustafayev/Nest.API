@@ -21,6 +21,8 @@ public class Product : BaseEntity
     public string SKU { get; set; }
 
     public ICollection<ProductImage>? ProductImages { get; set; }
+
+    public ICollection<Likes>? Likes { get; set; }
 }
 
 //public ICollection<Review> Reviews { get; set; }

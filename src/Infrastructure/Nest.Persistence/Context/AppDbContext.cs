@@ -14,6 +14,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 
     public DbSet<ProductImage> ProductImages { get; set; }
 
+    public DbSet<Likes> LikeDislike { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

@@ -2,6 +2,7 @@
 
 public class FileContainerNameConsts
 {
+    public const string Uploads = "Uploads";
     public const string ProductImages = "product-images";
     public const string VendorImages = "vendor-images";
     public const string ShopImages = "shop-images";

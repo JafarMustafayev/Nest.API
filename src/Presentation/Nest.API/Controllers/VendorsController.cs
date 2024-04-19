@@ -24,4 +24,11 @@ public class VendorsController : ControllerBase
         var res = await _vendorService.GetVendorByIdAsync(Id);
         return StatusCode(res.StatusCode, res);
     }
+
+    [HttpGet("Search")]
+    public async Task<ActionResult> SearchVendors([FromQuery] string query)
+    {
+        var res = await _vendorService.SearchVendors(query);
+        return StatusCode(res.StatusCode, res);
+    }
 }

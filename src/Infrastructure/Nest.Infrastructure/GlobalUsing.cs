@@ -17,6 +17,7 @@ global using Nest.Application.Abstractions.Storage;
 global using Nest.Application.Abstractions.Storage.Azure;
 global using Nest.Application.Abstractions.Storage.Local;
 global using Nest.Application.Abstractions.TokenHandlerService;
+global using Nest.Application.Consts;
 global using Nest.Application.DTOs;
 global using Nest.Application.DTOs.AuthDTOs;
 global using Nest.Application.DTOs.Mail;

@@ -11,6 +11,7 @@ global using Nest.Application.DTOs.AuthDTOs;
 global using Nest.Application.DTOs.Contact;
 global using Nest.Application.DTOs.Mail;
 global using Nest.Application.DTOs.ShopAndVendor;
+global using Nest.Application.DTOs.ShopingDTOs;
 global using Nest.Application.Exceptions;
 global using Nest.Application.Validators;
 global using Nest.Domain.Entities;

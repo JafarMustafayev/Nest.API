@@ -22,6 +22,8 @@ public class GetSingleProduct
 
     public string MainImageUrl { get; set; }
 
+    public double Rating { get; set; } = 5;
+
     public List<string> ImageUrls { get; set; }
 
     public List<GetSingleProductForGrid>? RelatedProducts { get; set; }

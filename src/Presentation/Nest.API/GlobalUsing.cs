@@ -1,4 +1,5 @@
 ﻿global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Diagnostics;
 global using Microsoft.AspNetCore.Mvc;
@@ -6,10 +7,12 @@ global using Microsoft.IdentityModel.Tokens;
 global using Nest.Application;
 global using Nest.Application.Abstractions;
 global using Nest.Application.Abstractions.Services;
+global using Nest.Application.Consts;
 global using Nest.Application.DTOs;
 global using Nest.Application.DTOs.AuthDTOs;
 global using Nest.Application.DTOs.Contact;
 global using Nest.Application.DTOs.ShopAndVendor;
+global using Nest.Application.DTOs.ShopingDTOs;
 global using Nest.Infrastructure;
 global using Nest.Infrastructure.Services.Storage.Local;
 global using Nest.Persistence;

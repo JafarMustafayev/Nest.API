@@ -6,6 +6,10 @@ public interface IProductService
 
     Task<ResponseDTO> GetProductByIdAsync(string id);
 
+    Task<ResponseDTO> SearchProducts(string query);
+
+    Task<ResponseDTO> SearchVendorProducts(string query, string vendorId);
+
     Task<ResponseDTO> CreateProductAsync(ProductCreateDTO product);
 
     Task<ResponseDTO> UpdateProductAsync(ProductUpdateDTO product);

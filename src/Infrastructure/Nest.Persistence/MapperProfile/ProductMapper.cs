@@ -14,7 +14,7 @@ public class ProductMapper : Profile
             .ForMember(des => des.ImageUrl, opt => opt.MapFrom(src => src.ProductImages.FirstOrDefault(x => x.IsMain).ImagePath))
             .ForMember(des => des.VendorName, opt => opt.MapFrom(src => src.Vendor.Name))
             .ForMember(des => des.VendorId, opt => opt.MapFrom(src => src.Vendor.Id))
-            .ForMember(des => des.IsNew, opt => opt.MapFrom(src => src.CreatedAt.AddDays(7) > DateTime.Now))
+            .ForMember(des => des.IsNew, opt => opt.MapFrom(src => src.CreatedAt.AddDays(7) > DateTime.UtcNow))
             .ReverseMap();
 
         CreateMap<Product, ProductCreateDTO>().ReverseMap();

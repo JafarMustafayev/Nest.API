@@ -74,6 +74,43 @@ public class VendorService : IVendorService
         };
     }
 
+    public async Task<ResponseDTO> SearchVendors(string query)
+    {
+        if (query.Length < 3)
+        {
+            return new()
+            {
+                Errors = null,
+                Message = "Search query must be at least 3 characters long",
+                Payload = null,
+                StatusCode = StatusCodes.Status400BadRequest,
+                Success = false
+            };
+        }
+
+        Expression<Func<Vendor, bool>> expression = x => !x.IsDeleted && (x.Id.Contains(query) || x.Name.Contains(query));
+
+        Expression<Func<Vendor, object>> order = x => x.Name;
+
+        List<Expression<Func<Vendor, object>>> includes = new()
+        {
+            x=>x.Products
+        };
+
+        var res = _vendorReadRepository.GetAllByExpression(expression, 1, 100, false, order, includes);
+
+        var map = _mapper.Map<List<GetSingleVendorForGrid>>(res);
+
+        return new ResponseDTO
+        {
+            Payload = map,
+            Message = "Vendors retrieved successfully",
+            Success = true,
+            StatusCode = StatusCodes.Status200OK,
+            Errors = null
+        };
+    }
+
     public async Task<ResponseDTO> CreateVendorAsync(VendorCreateDTO createDTO)
     {
         var vendorName = await _vendorReadRepository.GetSingleByExpressionAsync(x => x.Name == createDTO.Name);
@@ -147,7 +184,7 @@ public class VendorService : IVendorService
             vendor.ImagePath = res.pathName;
         }
 
-        vendor.UpdatedAt = DateTime.Now;
+        vendor.UpdatedAt = DateTime.UtcNow;
         _vendorWriteRepository.Update(vendor);
         await _vendorWriteRepository.SaveChangesAsync();
 
@@ -175,12 +212,12 @@ public class VendorService : IVendorService
         }
 
         vendor.IsDeleted = true;
-        vendor.DeletedAt = DateTime.Now;
+        vendor.DeletedAt = DateTime.UtcNow;
 
         foreach (var product in vendor.Products)
         {
             product.IsDeleted = true;
-            product.DeletedAt = DateTime.Now;
+            product.DeletedAt = DateTime.UtcNow;
             _productWriteRepository.Update(product);
         }
         _vendorWriteRepository.Update(vendor);

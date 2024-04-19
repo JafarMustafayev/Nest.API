@@ -35,6 +35,7 @@ public static class ServiceRegistration
         services.AddScoped<IProductImageReadRepository, ProductImageReadRepository>();
         services.AddScoped<IProductReadRepository, ProductReadRepository>();
         services.AddScoped<IVendorReadRepository, VendorReadRepository>();
+        services.AddScoped<ILikeDislikeReadRepository, LikeDislikeReadRepository>();
     }
 
     public static void AddWriteRepositories(this IServiceCollection services)
@@ -43,6 +44,7 @@ public static class ServiceRegistration
         services.AddScoped<IProductImageWriteRepository, ProductImageWriteRepository>();
         services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
         services.AddScoped<IVendorWriteRepository, VendorWriteRepository>();
+        services.AddScoped<ILikeDislikeWriteRepository, LikeDislikeWriteRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)
@@ -51,6 +53,7 @@ public static class ServiceRegistration
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<ICustomMailService, CustomMailService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IShopingService, ShopingService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IVendorService, VendorService>();
     }

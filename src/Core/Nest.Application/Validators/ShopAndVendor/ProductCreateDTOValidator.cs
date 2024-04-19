@@ -25,7 +25,7 @@ public class ProductCreateDTOValidator : AbstractValidator<ProductCreateDTO>
             .NotEmpty().WithMessage("The Product discount field is required.")
             .NotNull().WithMessage("The Product discount field is required.")
             .GreaterThanOrEqualTo(0).WithMessage("The Product discount must be greater than or equal to 0")
-            .LessThanOrEqualTo(100).WithMessage("The Product discount must be less than or equal to 100");
+            .LessThanOrEqualTo(99).WithMessage("The Product discount must be less than or equal to 99");
 
         RuleFor(x => x.Quantity)
             .NotEmpty().WithMessage("The Product quantity field is required.")

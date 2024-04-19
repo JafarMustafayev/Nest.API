@@ -48,6 +48,7 @@ public class ContactService : IContactService
         }
 
         contact.IsDeleted = true;
+        contact.DeletedAt = DateTime.UtcNow;
         _contactWriteReposiyory.Update(contact);
         await _contactWriteReposiyory.SaveChangesAsync();
         return new()

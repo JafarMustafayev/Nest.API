@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Nest.Application.Consts;
-
-namespace Nest.API.Controllers;
+﻿namespace Nest.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

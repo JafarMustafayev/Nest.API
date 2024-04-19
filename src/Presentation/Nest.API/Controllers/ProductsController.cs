@@ -24,4 +24,18 @@ public class ProductsController : ControllerBase
         var res = await _productService.GetProductByIdAsync(Id);
         return StatusCode(res.StatusCode, res);
     }
+
+    [HttpGet("Search")]
+    public async Task<ActionResult> SearchProducts([FromQuery] string query)
+    {
+        var res = await _productService.SearchProducts(query);
+        return StatusCode(res.StatusCode, res);
+    }
+
+    [HttpGet("SearchVendorProducts/{vendorId}")]
+    public async Task<ActionResult> SearchVendorProducts(string vendorId, [FromQuery] string query)
+    {
+        var res = await _productService.SearchVendorProducts(query, vendorId);
+        return StatusCode(res.StatusCode, res);
+    }
 }

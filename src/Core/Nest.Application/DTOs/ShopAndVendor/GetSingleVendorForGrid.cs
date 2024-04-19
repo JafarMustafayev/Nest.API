@@ -14,6 +14,8 @@ public class GetSingleVendorForGrid
 
     public int ProductCount { get; set; }
 
+    public string Description { get; set; }
+
     public double OverallRating { get; set; }
 
     public string ImageUrl { get; set; }

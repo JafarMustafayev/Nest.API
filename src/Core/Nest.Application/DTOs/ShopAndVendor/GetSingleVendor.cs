@@ -18,5 +18,7 @@ public class GetSingleVendor
 
     public string ImageUrl { get; set; }
 
+    public double Rating { get; set; } = 5;
+
     public ICollection<GetSingleProductForGrid> Products { get; set; }
 }

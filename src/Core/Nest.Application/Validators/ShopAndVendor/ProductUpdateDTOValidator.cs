@@ -24,7 +24,8 @@ public class ProductUpdateDTOValidator : AbstractValidator<ProductUpdateDTO>
         RuleFor(x => x.Discount)
             .NotEmpty().WithMessage("Product discount is required")
             .NotNull().WithMessage("Product discount is required")
-            .GreaterThanOrEqualTo(0).WithMessage("Product discount must be greater than or equal to 0");
+            .GreaterThanOrEqualTo(0).WithMessage("Product discount must be greater than or equal to 0")
+            .LessThanOrEqualTo(99).WithMessage("The Product discount must be less than or equal to 99");
 
         RuleFor(x => x.Quantity)
             .NotEmpty().WithMessage("Product quantity is required")

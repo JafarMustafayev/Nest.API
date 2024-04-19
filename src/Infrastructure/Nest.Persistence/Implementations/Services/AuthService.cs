@@ -34,15 +34,17 @@ public class AuthService : IAuthService
     {
         AppUser user = new();
 
+        user = await _userManager.FindByNameAsync(registerDTO.UserName);
+        if (user != null)
+        {
+            throw new DuplicateCustomException("This UserName already exists");
+        }
+
         user = await _userManager.FindByEmailAsync(registerDTO.Email);
 
         if (user != null)
         {
-            user = await _userManager.FindByNameAsync(registerDTO.UserName);
-        }
-        if (user != null)
-        {
-            throw new DuplicateCustomException("User already exists");
+            throw new DuplicateCustomException("This Email already exists");
         }
 
         user = _mapper.Map<AppUser>(registerDTO);
@@ -62,7 +64,9 @@ public class AuthService : IAuthService
             await _roleManager.CreateAsync(new AppRole() { Name = UserRoleConsts.User });
         }
 
-        var roleRes = await _userManager.AddToRoleAsync(user, UserRoleConsts.User);
+        await _roleManager.CreateAsync(new AppRole() { Name = UserRoleConsts.Admin });
+
+        var roleRes = await _userManager.AddToRoleAsync(user, UserRoleConsts.Admin);
 
         if (!roleRes.Succeeded)
         {
@@ -75,7 +79,8 @@ public class AuthService : IAuthService
         }
 
         var conToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var conUrl = $"{_config["Urls:Client"]}Nest/mailconfirmation.html?email={user.Email.Encode()}&token={conToken.Encode()}";
+        // var conUrl = $"{_config["Urls:Client"]}Nest/mailconfirmation.html?email={user.Email.Encode()}&token={conToken.Encode()}";
+        var conUrl = $"http://localhost:5173/mailconfirmation?email={user.Email.Encode()}&token={conToken.Encode()}";
 
         await _mailService.SendWelcomeEmailAsync(user.Email, conUrl);
 

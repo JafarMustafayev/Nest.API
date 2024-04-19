@@ -18,5 +18,7 @@ public class GetSingleProductForGrid
 
     public string ImageUrl { get; set; }
 
+    public double Rating { get; set; } = 5;
+
     public bool IsNew { get; set; }
 }

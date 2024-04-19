@@ -27,7 +27,7 @@ public class LocalStorage : ILocalStorage
 
     public async Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string path, IFormFileCollection files)
     {
-        string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, path);
+        string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, FileContainerNameConsts.Uploads, path);
         if (!Directory.Exists(uploadPath))
             Directory.CreateDirectory(uploadPath);
 
@@ -37,7 +37,7 @@ public class LocalStorage : ILocalStorage
             string fileNewName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
             await CopyFileAsync($"{uploadPath}\\{fileNewName}", file);
-            datas.Add((fileNewName, $"{path}\\{fileNewName}"));
+            datas.Add((fileNewName, $"{FileContainerNameConsts.Uploads}\\{path}\\{fileNewName}"));
         }
 
         return datas;
@@ -45,7 +45,7 @@ public class LocalStorage : ILocalStorage
 
     public async Task<(string fileName, string pathOrContainerName)> UploadAsync(string path, IFormFile file)
     {
-        string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, path);
+        string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, FileContainerNameConsts.Uploads, path);
         if (!Directory.Exists(uploadPath))
             Directory.CreateDirectory(uploadPath);
 
@@ -55,7 +55,7 @@ public class LocalStorage : ILocalStorage
 
         await CopyFileAsync($"{uploadPath}\\{fileNewName}", file);
         data.fileName = fileNewName;
-        data.path = $"{path}\\{fileNewName}";
+        data.path = $"{FileContainerNameConsts.Uploads}\\{path}\\{fileNewName}";
 
         return data;
     }
